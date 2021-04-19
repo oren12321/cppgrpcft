@@ -10,7 +10,7 @@ int main(int argc, char** argv) {
     try {
         FilesTransferClient client(::grpc::CreateChannel("127.0.0.1:50051", ::grpc::InsecureChannelCredentials()));
         client.Download("/tmp/remote/info.txt", "/tmp/downloads/info.txt");
-        //client.Upload("", "");
+        client.Upload("/tmp/drive/info.txt", "/tmp/remote/uploaded.txt");
     } catch (const std::exception& ex) {
         std::cout << "client failed: " << ex.what() << '\n';
         return 1;

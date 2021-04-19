@@ -44,6 +44,40 @@
 }
 
 ::grpc::Status FilesTransferImpl::Upload(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) {
+
+    ::Io::Packet header;
+    reader->Read(&header);
+    if (!header.has_fileinfo()) {
+        response->set_success(false);
+        response->set_msg("first packet is not file info");
+        return ::grpc::Status(::grpc::FAILED_PRECONDITION, "first packet is not file info");
+    }
+
+    std::string to = header.fileinfo().path();
+    std::ofstream ofs(to, std::ios::out | std::ios::binary);
+    if (!ofs.is_open()) {
+        std::stringstream ss;
+        ss << "failed to create destination file: '" << to << "'";
+        response->set_success(false);
+        response->set_msg(ss.str());
+        return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
+    }
+
+    ::Io::Packet payload;
+    while (reader->Read(&payload)) {
+        if (!payload.has_chunk()) {
+            ofs.close();
+            std::remove(to.c_str());
+
+            response->set_success(false);
+            response->set_msg("packet is not chunk");
+            return ::grpc::Status(::grpc::FAILED_PRECONDITION, "packet is not chunk");
+        }
+
+        std::string data = payload.chunk().data();
+        ofs.write(data.data(), data.size());
+    }
+
     return ::grpc::Status::OK;
 }
 
