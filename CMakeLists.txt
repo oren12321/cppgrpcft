@@ -1,0 +1,50 @@
+cmake_minimum_required(VERSION 3.19)
+
+project(FilesTransfer CXX)
+
+find_package(Threads REQUIRED)
+
+find_package(protobuf REQUIRED)
+message(STATUS "Using protobuf ${protobuf_VERSION}")
+find_package(gRPC REQUIRED)
+message(STATUS "Using gRPC ${gRPC_VERSION}")
+
+set(hw_proto_srcs ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.pb.cc)
+set(hw_grpc_srcs ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.grpc.pb.cc)
+
+add_library(cppgrpcft)
+target_sources(cppgrpcft
+    PRIVATE
+        src/io_server.cc
+        src/io_client.cc
+        ${hw_proto_srcs}
+        ${hw_grpc_srcs}
+    PUBLIC
+        src/io_server.h
+        src/io_client.h)
+target_link_libraries(cppgrpcft
+    gRPC::grpc++)
+
+install(TARGETS cppgrpcft DESTINATION lib)
+install(FILES src/io_server.h src/io_client.h DESTINATION include/cppgrpcft)
+
+add_executable(cppgrpcft-client
+    app/client.cc)
+target_link_libraries(cppgrpcft-client
+    gRPC::grpc++
+    libcppgrpcft.a)
+
+add_executable(cppgrpcft-server
+    app/server.cc)
+target_link_libraries(cppgrpcft-server
+    gRPC::grpc++
+    gRPC::grpc++_reflection
+    libcppgrpcft.a)
+
+install(
+    TARGETS
+        cppgrpcft-server
+        cppgrpcft-client
+    DESTINATION
+        bin)
+

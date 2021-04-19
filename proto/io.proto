@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package Io;
+
+option go_package = "github.com/oren12321/gogrpcft/proto";
+
+service FilesTransfer {
+    rpc Download (FileInfo) returns (stream Chunk) {}
+    rpc Upload (stream Packet) returns (Status) {}
+}
+
+message FileInfo {
+    string path = 1;
+}
+
+message Chunk {
+    bytes data = 1;
+}
+
+message Packet {
+    oneof packetOptions {
+        FileInfo fileInfo = 1;
+        Chunk chunk = 2;
+    }
+}
+
+message Status {
+    bool success = 1;
+    string msg = 2;
+}
+
