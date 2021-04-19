@@ -32,14 +32,14 @@ add_executable(cppgrpcft-client
     app/client.cc)
 target_link_libraries(cppgrpcft-client
     gRPC::grpc++
-    libcppgrpcft.a)
+    ${CMAKE_BINARY_DIR}/libcppgrpcft.a)
 
 add_executable(cppgrpcft-server
     app/server.cc)
 target_link_libraries(cppgrpcft-server
     gRPC::grpc++
     gRPC::grpc++_reflection
-    libcppgrpcft.a)
+    ${CMAKE_BINARY_DIR}/libcppgrpcft.a)
 
 install(
     TARGETS
