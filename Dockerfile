@@ -25,5 +25,17 @@ RUN apt-get update && apt-get install -y \
           ../.. \
  && make -j$(nproc) \
  && make install \
- && cd - && rm -rf /tmp/*
+ && rm -rf /tmp/*
+
+WORKDIR /tmp/
+RUN apt-get update && apt-get install -y git \
+ && rm -rf /var/lib/apt/lists/* \
+ && git clone -b release-1.10.0 https://github.com/google/googletest.git \
+ && cd googletest \
+ && mkdir build \
+ && cd build \
+ && cmake .. \
+ && make \
+ && make install \
+ && rm -rf /tmp/*
 
