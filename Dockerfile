@@ -1,4 +1,4 @@
-FROM amd64/ubuntu:18.04
+FROM amd64/ubuntu:18.04 AS builder
 
 WORKDIR /tmp/
 RUN apt-get update && apt-get install -y wget \
@@ -38,4 +38,19 @@ RUN apt-get update && apt-get install -y git \
  && make \
  && make install \
  && rm -rf /tmp/*
+
+COPY . /workspace/
+WORKDIR /workspace/
+RUN mkdir build \
+ && cd build \
+ && cmake .. \
+ && make \
+ && make install \
+ && make test
+
+FROM ubuntu:18.04 AS prod
+
+WORKDIR /app/
+COPY --from=builder /usr/local/bin/cppgrpcft-client /usr/local/bin/
+COPY --from=builder /usr/local/bin/cppgrpcft-server /usr/local/bin/
 
