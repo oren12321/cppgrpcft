@@ -62,3 +62,10 @@ target_link_libraries(cppgrpcft-tests
 
 install(TARGETS cppgrpcft-tests DESTINATION bin)
 
+add_dependencies(cppgrpcft-client cppgrpcft)
+add_dependencies(cppgrpcft-server cppgrpcft)
+add_dependencies(cppgrpcft-tests cppgrpcft)
+
+enable_testing()
+add_test(NAME CppGrpcFtTest COMMAND cppgrpcft-tests)
+
