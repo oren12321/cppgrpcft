@@ -113,7 +113,8 @@ TEST_F(CppGrpcFT, Download) {
     FilesTransferClient client(::grpc::CreateChannel("127.0.0.1:50051", ::grpc::InsecureChannelCredentials()));
     
     try {
-        client.Download(_from, _to);
+        ::grpc::ClientContext context;
+        client.Download(_from, _to, &context);
     } catch (const std::exception& ex) {
         FAIL() << "failed to download file: " << ex.what();
     } catch (...) {
@@ -158,7 +159,8 @@ TEST_F(CppGrpcFT, Upload) {
     FilesTransferClient client(::grpc::CreateChannel("127.0.0.1:50051", ::grpc::InsecureChannelCredentials()));
     
     try {
-        client.Upload(_from, _to);
+        ::grpc::ClientContext context;
+        client.Upload(_from, _to, &context);
     } catch (const std::exception& ex) {
         FAIL() << "failed to download file: " << ex.what();
     } catch (...) {

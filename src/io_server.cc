@@ -11,6 +11,10 @@
 
 ::grpc::Status FilesTransferImpl::Download(::grpc::ServerContext* context, const ::Io::FileInfo* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) {
     
+    if (context->IsCancelled()) {
+        return ::grpc::Status(::grpc::CANCELLED, "deadline exceeded or client cancelled, abandoning");
+    }
+
     std::string from = request->path();
 
     std::ifstream ifs(from, std::ios::in | std::ios::binary);
@@ -44,6 +48,10 @@
 }
 
 ::grpc::Status FilesTransferImpl::Upload(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) {
+
+    if (context->IsCancelled()) {
+        return ::grpc::Status(::grpc::CANCELLED, "deadline exceeded or client cancelled, abandoning");
+    }
 
     ::Io::Packet header;
     reader->Read(&header);

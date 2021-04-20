@@ -11,7 +11,7 @@
 
 #include "../proto/io.grpc.pb.h"
 
-void FilesTransferClient::Download(std::string from, std::string to) {
+void FilesTransferClient::Download(std::string from, std::string to, ::grpc::ClientContext* context) {
 
     std::ofstream ofs(to, std::ios::out | std::ios::binary);
     if (!ofs.is_open()) {
@@ -22,8 +22,7 @@ void FilesTransferClient::Download(std::string from, std::string to) {
 
     ::Io::FileInfo fileInfo;
     fileInfo.set_path(from);
-    ::grpc::ClientContext context;
-    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Download(&context, fileInfo));
+    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Download(context, fileInfo));
 
     ::Io::Chunk chunk;
     while (reader->Read(&chunk)) {
@@ -43,7 +42,7 @@ void FilesTransferClient::Download(std::string from, std::string to) {
     }
 }
 
-void FilesTransferClient::Upload(std::string from, std::string to) {
+void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::ClientContext* context) {
 
     std::ifstream ifs(from, std::ios::in | std::ios::binary);
     if (!ifs.is_open()) {
@@ -60,8 +59,7 @@ void FilesTransferClient::Upload(std::string from, std::string to) {
     }
 
     ::Io::Status ioStatus;
-    ::grpc::ClientContext context;
-    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Upload(&context, &ioStatus));
+    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Upload(context, &ioStatus));
 
     ::Io::Packet header;
     header.mutable_fileinfo()->set_path(to);

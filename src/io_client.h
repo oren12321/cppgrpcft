@@ -13,9 +13,9 @@ public:
     FilesTransferClient(std::shared_ptr<::grpc::Channel> channel)
         : stub_(::Io::FilesTransfer::NewStub(channel)) {}
 
-    void Download(std::string from, std::string to);
+    void Download(std::string from, std::string to, ::grpc::ClientContext* context);
 
-    void Upload(std::string from, std::string to);
+    void Upload(std::string from, std::string to, ::grpc::ClientContext* context);
 
 private:
     std::unique_ptr<Io::FilesTransfer::Stub> stub_;
