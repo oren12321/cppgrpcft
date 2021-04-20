@@ -48,3 +48,17 @@ install(
     DESTINATION
         bin)
 
+find_package(GTest REQUIRED)
+
+add_executable(cppgrpcft-tests
+    tests/main.cc
+    tests/cppgrpcft_test.cc)
+target_link_libraries(cppgrpcft-tests
+    gRPC::grpc++
+    gRPC::grpc++_reflection
+    GTest::gtest
+    GTest::gtest_main
+    ${CMAKE_BINARY_DIR}/libcppgrpcft.a)
+
+install(TARGETS cppgrpcft-tests DESTINATION bin)
+
