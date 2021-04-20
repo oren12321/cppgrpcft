@@ -1,6 +1,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <unordered_map>
 
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
@@ -8,8 +9,17 @@
 
 #include "../src/io_server.h"
 
-void RunServer() {
+#include "args_parser.h"
+
+int main(int argc, char** argv) {
+
+    std::unordered_map<std::string, std::string> mapped_args = parseArgs(argc, argv);
+
     std::string server_address("0.0.0.0:50051");
+    if (mapped_args.find("--address") != mapped_args.end()) {
+        server_address = mapped_args["--address"];
+    }
+
     FilesTransferImpl service;
 
     ::grpc::EnableDefaultHealthCheckService(true);
@@ -22,10 +32,6 @@ void RunServer() {
 
     std::cout << "Server listening on " << server_address << '\n';
     server->Wait();
-}
-
-int main(int argc, char** argv) {
-    RunServer();
 
     return 0;
 }
