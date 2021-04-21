@@ -9,7 +9,6 @@
 #include <vector>
 #include <iterator>
 #include <functional>
-#include <iterator>
 
 #include <grpcpp/ext/proto_server_reflection_plugin.h>
 #include <grpcpp/grpcpp.h>
@@ -18,41 +17,9 @@
 #include "../src/io_client.h"
 #include "../src/io_server.h"
 
-std::vector<char> generateRandomBuffer(int size) {
-  std::random_device r;
-  std::seed_seq seed{};
-  std::mt19937 eng(seed);
+#include "utils.h"
 
-  std::uniform_int_distribution<char> dist;
-  std::vector<char> v(size);
-
-  std::generate(v.begin(), v.end(), std::bind(dist, eng));
-  return v;
-}
-
-template <typename InputIter>
-bool rangeEqual(InputIter begin1, InputIter end1, InputIter begin2, InputIter end2) {
-    while (begin1 != end1 && begin2 != end2) {
-        if (*begin1 != *begin2) return false;
-        ++begin1;
-        ++begin2;
-    }
-    return (begin1 == end1) && (begin2 == end2);
-}
-
-bool filesEqual(const std::string& path1, const std::string& path2) {
-    std::ifstream ifs1(path1);
-    std::ifstream ifs2(path2);
-
-    std::istreambuf_iterator<char> begin1(ifs1);
-    std::istreambuf_iterator<char> begin2(ifs2);
-
-    std::istreambuf_iterator<char> end;
-
-    return rangeEqual(begin1, end, begin2, end);
-}
-
-class CppGrpcFT : public ::testing::Test {
+class CppGrpcFT_File : public ::testing::Test {
 protected:
     void SetUp() override {
         _from = std::string{};
@@ -71,17 +38,14 @@ protected:
     void TearDown() override {
         std::remove(_from.data());
         std::remove(_to.data());
-
-        if (_server != nullptr) _server->Shutdown();
     }
 
     std::string _from{};
     std::string _to{};
-    std::unique_ptr<::grpc::Server> _server = nullptr;
 };
 
 
-TEST_F(CppGrpcFT, Download) {
+TEST_F(CppGrpcFT_File, FileDownload) {
 
     // Make tmp file to download.
 
@@ -127,7 +91,7 @@ TEST_F(CppGrpcFT, Download) {
 
 }
 
-TEST_F(CppGrpcFT, Upload) {
+TEST_F(CppGrpcFT_File, FileUpload) {
 
     // Make tmp file to download.
 
