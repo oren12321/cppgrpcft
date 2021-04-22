@@ -28,44 +28,44 @@
 
 namespace Io {
 
-class FilesTransfer final {
+class Transfer final {
  public:
   static constexpr char const* service_full_name() {
-    return "Io.FilesTransfer";
+    return "Io.Transfer";
   }
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    std::unique_ptr< ::grpc::ClientReaderInterface< ::Io::Chunk>> Download(::grpc::ClientContext* context, const ::Io::FileInfo& request) {
-      return std::unique_ptr< ::grpc::ClientReaderInterface< ::Io::Chunk>>(DownloadRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReaderInterface< ::Io::Chunk>> Receive(::grpc::ClientContext* context, const ::Io::Info& request) {
+      return std::unique_ptr< ::grpc::ClientReaderInterface< ::Io::Chunk>>(ReceiveRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>> AsyncDownload(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>>(AsyncDownloadRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>> AsyncReceive(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>>(AsyncReceiveRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>> PrepareAsyncDownload(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>>(PrepareAsyncDownloadRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>> PrepareAsyncReceive(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>>(PrepareAsyncReceiveRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientWriterInterface< ::Io::Packet>> Upload(::grpc::ClientContext* context, ::Io::Status* response) {
-      return std::unique_ptr< ::grpc::ClientWriterInterface< ::Io::Packet>>(UploadRaw(context, response));
+    std::unique_ptr< ::grpc::ClientWriterInterface< ::Io::Packet>> Send(::grpc::ClientContext* context, ::Io::Status* response) {
+      return std::unique_ptr< ::grpc::ClientWriterInterface< ::Io::Packet>>(SendRaw(context, response));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>> AsyncUpload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>>(AsyncUploadRaw(context, response, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>> AsyncSend(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>>(AsyncSendRaw(context, response, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>> PrepareAsyncUpload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>>(PrepareAsyncUploadRaw(context, response, cq));
+    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>> PrepareAsyncSend(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::Io::Packet>>(PrepareAsyncSendRaw(context, response, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Download(::grpc::ClientContext* context, ::Io::FileInfo* request, ::grpc::ClientReadReactor< ::Io::Chunk>* reactor) = 0;
+      virtual void Receive(::grpc::ClientContext* context, ::Io::Info* request, ::grpc::ClientReadReactor< ::Io::Chunk>* reactor) = 0;
       #else
-      virtual void Download(::grpc::ClientContext* context, ::Io::FileInfo* request, ::grpc::experimental::ClientReadReactor< ::Io::Chunk>* reactor) = 0;
+      virtual void Receive(::grpc::ClientContext* context, ::Io::Info* request, ::grpc::experimental::ClientReadReactor< ::Io::Chunk>* reactor) = 0;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      virtual void Upload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::ClientWriteReactor< ::Io::Packet>* reactor) = 0;
+      virtual void Send(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::ClientWriteReactor< ::Io::Packet>* reactor) = 0;
       #else
-      virtual void Upload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::experimental::ClientWriteReactor< ::Io::Packet>* reactor) = 0;
+      virtual void Send(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::experimental::ClientWriteReactor< ::Io::Packet>* reactor) = 0;
       #endif
     };
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
@@ -76,46 +76,46 @@ class FilesTransfer final {
     #endif
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientReaderInterface< ::Io::Chunk>* DownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>* AsyncDownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>* PrepareAsyncDownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientWriterInterface< ::Io::Packet>* UploadRaw(::grpc::ClientContext* context, ::Io::Status* response) = 0;
-    virtual ::grpc::ClientAsyncWriterInterface< ::Io::Packet>* AsyncUploadRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncWriterInterface< ::Io::Packet>* PrepareAsyncUploadRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientReaderInterface< ::Io::Chunk>* ReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>* AsyncReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncReaderInterface< ::Io::Chunk>* PrepareAsyncReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientWriterInterface< ::Io::Packet>* SendRaw(::grpc::ClientContext* context, ::Io::Status* response) = 0;
+    virtual ::grpc::ClientAsyncWriterInterface< ::Io::Packet>* AsyncSendRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) = 0;
+    virtual ::grpc::ClientAsyncWriterInterface< ::Io::Packet>* PrepareAsyncSendRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    std::unique_ptr< ::grpc::ClientReader< ::Io::Chunk>> Download(::grpc::ClientContext* context, const ::Io::FileInfo& request) {
-      return std::unique_ptr< ::grpc::ClientReader< ::Io::Chunk>>(DownloadRaw(context, request));
+    std::unique_ptr< ::grpc::ClientReader< ::Io::Chunk>> Receive(::grpc::ClientContext* context, const ::Io::Info& request) {
+      return std::unique_ptr< ::grpc::ClientReader< ::Io::Chunk>>(ReceiveRaw(context, request));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>> AsyncDownload(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>>(AsyncDownloadRaw(context, request, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>> AsyncReceive(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>>(AsyncReceiveRaw(context, request, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>> PrepareAsyncDownload(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>>(PrepareAsyncDownloadRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>> PrepareAsyncReceive(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncReader< ::Io::Chunk>>(PrepareAsyncReceiveRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientWriter< ::Io::Packet>> Upload(::grpc::ClientContext* context, ::Io::Status* response) {
-      return std::unique_ptr< ::grpc::ClientWriter< ::Io::Packet>>(UploadRaw(context, response));
+    std::unique_ptr< ::grpc::ClientWriter< ::Io::Packet>> Send(::grpc::ClientContext* context, ::Io::Status* response) {
+      return std::unique_ptr< ::grpc::ClientWriter< ::Io::Packet>>(SendRaw(context, response));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>> AsyncUpload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>>(AsyncUploadRaw(context, response, cq, tag));
+    std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>> AsyncSend(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) {
+      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>>(AsyncSendRaw(context, response, cq, tag));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>> PrepareAsyncUpload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>>(PrepareAsyncUploadRaw(context, response, cq));
+    std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>> PrepareAsyncSend(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::Io::Packet>>(PrepareAsyncSendRaw(context, response, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Download(::grpc::ClientContext* context, ::Io::FileInfo* request, ::grpc::ClientReadReactor< ::Io::Chunk>* reactor) override;
+      void Receive(::grpc::ClientContext* context, ::Io::Info* request, ::grpc::ClientReadReactor< ::Io::Chunk>* reactor) override;
       #else
-      void Download(::grpc::ClientContext* context, ::Io::FileInfo* request, ::grpc::experimental::ClientReadReactor< ::Io::Chunk>* reactor) override;
+      void Receive(::grpc::ClientContext* context, ::Io::Info* request, ::grpc::experimental::ClientReadReactor< ::Io::Chunk>* reactor) override;
       #endif
       #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-      void Upload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::ClientWriteReactor< ::Io::Packet>* reactor) override;
+      void Send(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::ClientWriteReactor< ::Io::Packet>* reactor) override;
       #else
-      void Upload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::experimental::ClientWriteReactor< ::Io::Packet>* reactor) override;
+      void Send(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::experimental::ClientWriteReactor< ::Io::Packet>* reactor) override;
       #endif
      private:
       friend class Stub;
@@ -128,14 +128,14 @@ class FilesTransfer final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientReader< ::Io::Chunk>* DownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request) override;
-    ::grpc::ClientAsyncReader< ::Io::Chunk>* AsyncDownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncReader< ::Io::Chunk>* PrepareAsyncDownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientWriter< ::Io::Packet>* UploadRaw(::grpc::ClientContext* context, ::Io::Status* response) override;
-    ::grpc::ClientAsyncWriter< ::Io::Packet>* AsyncUploadRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncWriter< ::Io::Packet>* PrepareAsyncUploadRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) override;
-    const ::grpc::internal::RpcMethod rpcmethod_Download_;
-    const ::grpc::internal::RpcMethod rpcmethod_Upload_;
+    ::grpc::ClientReader< ::Io::Chunk>* ReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request) override;
+    ::grpc::ClientAsyncReader< ::Io::Chunk>* AsyncReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncReader< ::Io::Chunk>* PrepareAsyncReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientWriter< ::Io::Packet>* SendRaw(::grpc::ClientContext* context, ::Io::Status* response) override;
+    ::grpc::ClientAsyncWriter< ::Io::Packet>* AsyncSendRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) override;
+    ::grpc::ClientAsyncWriter< ::Io::Packet>* PrepareAsyncSendRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) override;
+    const ::grpc::internal::RpcMethod rpcmethod_Receive_;
+    const ::grpc::internal::RpcMethod rpcmethod_Send_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -143,94 +143,94 @@ class FilesTransfer final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status Download(::grpc::ServerContext* context, const ::Io::FileInfo* request, ::grpc::ServerWriter< ::Io::Chunk>* writer);
-    virtual ::grpc::Status Upload(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response);
+    virtual ::grpc::Status Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer);
+    virtual ::grpc::Status Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response);
   };
   template <class BaseClass>
-  class WithAsyncMethod_Download : public BaseClass {
+  class WithAsyncMethod_Receive : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_Download() {
+    WithAsyncMethod_Receive() {
       ::grpc::Service::MarkMethodAsync(0);
     }
-    ~WithAsyncMethod_Download() override {
+    ~WithAsyncMethod_Receive() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Download(::grpc::ServerContext* /*context*/, const ::Io::FileInfo* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
+    ::grpc::Status Receive(::grpc::ServerContext* /*context*/, const ::Io::Info* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestDownload(::grpc::ServerContext* context, ::Io::FileInfo* request, ::grpc::ServerAsyncWriter< ::Io::Chunk>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestReceive(::grpc::ServerContext* context, ::Io::Info* request, ::grpc::ServerAsyncWriter< ::Io::Chunk>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithAsyncMethod_Upload : public BaseClass {
+  class WithAsyncMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithAsyncMethod_Upload() {
+    WithAsyncMethod_Send() {
       ::grpc::Service::MarkMethodAsync(1);
     }
-    ~WithAsyncMethod_Upload() override {
+    ~WithAsyncMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Upload(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestUpload(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::Io::Status, ::Io::Packet>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSend(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::Io::Status, ::Io::Packet>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncClientStreaming(1, context, reader, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Download<WithAsyncMethod_Upload<Service > > AsyncService;
+  typedef WithAsyncMethod_Receive<WithAsyncMethod_Send<Service > > AsyncService;
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_Download : public BaseClass {
+  class ExperimentalWithCallbackMethod_Receive : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_Download() {
+    ExperimentalWithCallbackMethod_Receive() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
       ::grpc::Service::experimental().
     #endif
         MarkMethodCallback(0,
-          new ::grpc::internal::CallbackServerStreamingHandler< ::Io::FileInfo, ::Io::Chunk>(
+          new ::grpc::internal::CallbackServerStreamingHandler< ::Io::Info, ::Io::Chunk>(
             [this](
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
                    ::grpc::CallbackServerContext*
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const ::Io::FileInfo* request) { return this->Download(context, request); }));
+                     context, const ::Io::Info* request) { return this->Receive(context, request); }));
     }
-    ~ExperimentalWithCallbackMethod_Download() override {
+    ~ExperimentalWithCallbackMethod_Receive() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Download(::grpc::ServerContext* /*context*/, const ::Io::FileInfo* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
+    ::grpc::Status Receive(::grpc::ServerContext* /*context*/, const ::Io::Info* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerWriteReactor< ::Io::Chunk>* Download(
-      ::grpc::CallbackServerContext* /*context*/, const ::Io::FileInfo* /*request*/)
+    virtual ::grpc::ServerWriteReactor< ::Io::Chunk>* Receive(
+      ::grpc::CallbackServerContext* /*context*/, const ::Io::Info* /*request*/)
     #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::Io::Chunk>* Download(
-      ::grpc::experimental::CallbackServerContext* /*context*/, const ::Io::FileInfo* /*request*/)
+    virtual ::grpc::experimental::ServerWriteReactor< ::Io::Chunk>* Receive(
+      ::grpc::experimental::CallbackServerContext* /*context*/, const ::Io::Info* /*request*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithCallbackMethod_Upload : public BaseClass {
+  class ExperimentalWithCallbackMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithCallbackMethod_Upload() {
+    ExperimentalWithCallbackMethod_Send() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -244,110 +244,110 @@ class FilesTransfer final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, ::Io::Status* response) { return this->Upload(context, response); }));
+                     context, ::Io::Status* response) { return this->Send(context, response); }));
     }
-    ~ExperimentalWithCallbackMethod_Upload() override {
+    ~ExperimentalWithCallbackMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Upload(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerReadReactor< ::Io::Packet>* Upload(
+    virtual ::grpc::ServerReadReactor< ::Io::Packet>* Send(
       ::grpc::CallbackServerContext* /*context*/, ::Io::Status* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerReadReactor< ::Io::Packet>* Upload(
+    virtual ::grpc::experimental::ServerReadReactor< ::Io::Packet>* Send(
       ::grpc::experimental::CallbackServerContext* /*context*/, ::Io::Status* /*response*/)
     #endif
       { return nullptr; }
   };
   #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-  typedef ExperimentalWithCallbackMethod_Download<ExperimentalWithCallbackMethod_Upload<Service > > CallbackService;
+  typedef ExperimentalWithCallbackMethod_Receive<ExperimentalWithCallbackMethod_Send<Service > > CallbackService;
   #endif
 
-  typedef ExperimentalWithCallbackMethod_Download<ExperimentalWithCallbackMethod_Upload<Service > > ExperimentalCallbackService;
+  typedef ExperimentalWithCallbackMethod_Receive<ExperimentalWithCallbackMethod_Send<Service > > ExperimentalCallbackService;
   template <class BaseClass>
-  class WithGenericMethod_Download : public BaseClass {
+  class WithGenericMethod_Receive : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_Download() {
+    WithGenericMethod_Receive() {
       ::grpc::Service::MarkMethodGeneric(0);
     }
-    ~WithGenericMethod_Download() override {
+    ~WithGenericMethod_Receive() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Download(::grpc::ServerContext* /*context*/, const ::Io::FileInfo* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
+    ::grpc::Status Receive(::grpc::ServerContext* /*context*/, const ::Io::Info* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithGenericMethod_Upload : public BaseClass {
+  class WithGenericMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithGenericMethod_Upload() {
+    WithGenericMethod_Send() {
       ::grpc::Service::MarkMethodGeneric(1);
     }
-    ~WithGenericMethod_Upload() override {
+    ~WithGenericMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Upload(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
   };
   template <class BaseClass>
-  class WithRawMethod_Download : public BaseClass {
+  class WithRawMethod_Receive : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_Download() {
+    WithRawMethod_Receive() {
       ::grpc::Service::MarkMethodRaw(0);
     }
-    ~WithRawMethod_Download() override {
+    ~WithRawMethod_Receive() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Download(::grpc::ServerContext* /*context*/, const ::Io::FileInfo* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
+    ::grpc::Status Receive(::grpc::ServerContext* /*context*/, const ::Io::Info* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestDownload(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestReceive(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncWriter< ::grpc::ByteBuffer>* writer, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncServerStreaming(0, context, request, writer, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class WithRawMethod_Upload : public BaseClass {
+  class WithRawMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithRawMethod_Upload() {
+    WithRawMethod_Send() {
       ::grpc::Service::MarkMethodRaw(1);
     }
-    ~WithRawMethod_Upload() override {
+    ~WithRawMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Upload(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestUpload(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestSend(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncClientStreaming(1, context, reader, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_Download : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_Receive : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_Download() {
+    ExperimentalWithRawCallbackMethod_Receive() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -361,31 +361,31 @@ class FilesTransfer final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, const::grpc::ByteBuffer* request) { return this->Download(context, request); }));
+                     context, const::grpc::ByteBuffer* request) { return this->Receive(context, request); }));
     }
-    ~ExperimentalWithRawCallbackMethod_Download() override {
+    ~ExperimentalWithRawCallbackMethod_Receive() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Download(::grpc::ServerContext* /*context*/, const ::Io::FileInfo* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
+    ::grpc::Status Receive(::grpc::ServerContext* /*context*/, const ::Io::Info* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* Download(
+    virtual ::grpc::ServerWriteReactor< ::grpc::ByteBuffer>* Receive(
       ::grpc::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
     #else
-    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* Download(
+    virtual ::grpc::experimental::ServerWriteReactor< ::grpc::ByteBuffer>* Receive(
       ::grpc::experimental::CallbackServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/)
     #endif
       { return nullptr; }
   };
   template <class BaseClass>
-  class ExperimentalWithRawCallbackMethod_Upload : public BaseClass {
+  class ExperimentalWithRawCallbackMethod_Send : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    ExperimentalWithRawCallbackMethod_Upload() {
+    ExperimentalWithRawCallbackMethod_Send() {
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
       ::grpc::Service::
     #else
@@ -399,55 +399,55 @@ class FilesTransfer final {
     #else
                    ::grpc::experimental::CallbackServerContext*
     #endif
-                     context, ::grpc::ByteBuffer* response) { return this->Upload(context, response); }));
+                     context, ::grpc::ByteBuffer* response) { return this->Send(context, response); }));
     }
-    ~ExperimentalWithRawCallbackMethod_Upload() override {
+    ~ExperimentalWithRawCallbackMethod_Send() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Upload(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
+    ::grpc::Status Send(::grpc::ServerContext* /*context*/, ::grpc::ServerReader< ::Io::Packet>* /*reader*/, ::Io::Status* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     #ifdef GRPC_CALLBACK_API_NONEXPERIMENTAL
-    virtual ::grpc::ServerReadReactor< ::grpc::ByteBuffer>* Upload(
+    virtual ::grpc::ServerReadReactor< ::grpc::ByteBuffer>* Send(
       ::grpc::CallbackServerContext* /*context*/, ::grpc::ByteBuffer* /*response*/)
     #else
-    virtual ::grpc::experimental::ServerReadReactor< ::grpc::ByteBuffer>* Upload(
+    virtual ::grpc::experimental::ServerReadReactor< ::grpc::ByteBuffer>* Send(
       ::grpc::experimental::CallbackServerContext* /*context*/, ::grpc::ByteBuffer* /*response*/)
     #endif
       { return nullptr; }
   };
   typedef Service StreamedUnaryService;
   template <class BaseClass>
-  class WithSplitStreamingMethod_Download : public BaseClass {
+  class WithSplitStreamingMethod_Receive : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
-    WithSplitStreamingMethod_Download() {
+    WithSplitStreamingMethod_Receive() {
       ::grpc::Service::MarkMethodStreamed(0,
         new ::grpc::internal::SplitServerStreamingHandler<
-          ::Io::FileInfo, ::Io::Chunk>(
+          ::Io::Info, ::Io::Chunk>(
             [this](::grpc::ServerContext* context,
                    ::grpc::ServerSplitStreamer<
-                     ::Io::FileInfo, ::Io::Chunk>* streamer) {
-                       return this->StreamedDownload(context,
+                     ::Io::Info, ::Io::Chunk>* streamer) {
+                       return this->StreamedReceive(context,
                          streamer);
                   }));
     }
-    ~WithSplitStreamingMethod_Download() override {
+    ~WithSplitStreamingMethod_Receive() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Download(::grpc::ServerContext* /*context*/, const ::Io::FileInfo* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
+    ::grpc::Status Receive(::grpc::ServerContext* /*context*/, const ::Io::Info* /*request*/, ::grpc::ServerWriter< ::Io::Chunk>* /*writer*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with split streamed
-    virtual ::grpc::Status StreamedDownload(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::Io::FileInfo,::Io::Chunk>* server_split_streamer) = 0;
+    virtual ::grpc::Status StreamedReceive(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::Io::Info,::Io::Chunk>* server_split_streamer) = 0;
   };
-  typedef WithSplitStreamingMethod_Download<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_Download<Service > StreamedService;
+  typedef WithSplitStreamingMethod_Receive<Service > SplitStreamedService;
+  typedef WithSplitStreamingMethod_Receive<Service > StreamedService;
 };
 
 }  // namespace Io

@@ -21,88 +21,88 @@
 #include <grpcpp/impl/codegen/sync_stream.h>
 namespace Io {
 
-static const char* FilesTransfer_method_names[] = {
-  "/Io.FilesTransfer/Download",
-  "/Io.FilesTransfer/Upload",
+static const char* Transfer_method_names[] = {
+  "/Io.Transfer/Receive",
+  "/Io.Transfer/Send",
 };
 
-std::unique_ptr< FilesTransfer::Stub> FilesTransfer::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
+std::unique_ptr< Transfer::Stub> Transfer::NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options) {
   (void)options;
-  std::unique_ptr< FilesTransfer::Stub> stub(new FilesTransfer::Stub(channel));
+  std::unique_ptr< Transfer::Stub> stub(new Transfer::Stub(channel));
   return stub;
 }
 
-FilesTransfer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
-  : channel_(channel), rpcmethod_Download_(FilesTransfer_method_names[0], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
-  , rpcmethod_Upload_(FilesTransfer_method_names[1], ::grpc::internal::RpcMethod::CLIENT_STREAMING, channel)
+Transfer::Stub::Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel)
+  : channel_(channel), rpcmethod_Receive_(Transfer_method_names[0], ::grpc::internal::RpcMethod::SERVER_STREAMING, channel)
+  , rpcmethod_Send_(Transfer_method_names[1], ::grpc::internal::RpcMethod::CLIENT_STREAMING, channel)
   {}
 
-::grpc::ClientReader< ::Io::Chunk>* FilesTransfer::Stub::DownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request) {
-  return ::grpc::internal::ClientReaderFactory< ::Io::Chunk>::Create(channel_.get(), rpcmethod_Download_, context, request);
+::grpc::ClientReader< ::Io::Chunk>* Transfer::Stub::ReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request) {
+  return ::grpc::internal::ClientReaderFactory< ::Io::Chunk>::Create(channel_.get(), rpcmethod_Receive_, context, request);
 }
 
-void FilesTransfer::Stub::experimental_async::Download(::grpc::ClientContext* context, ::Io::FileInfo* request, ::grpc::experimental::ClientReadReactor< ::Io::Chunk>* reactor) {
-  ::grpc::internal::ClientCallbackReaderFactory< ::Io::Chunk>::Create(stub_->channel_.get(), stub_->rpcmethod_Download_, context, request, reactor);
+void Transfer::Stub::experimental_async::Receive(::grpc::ClientContext* context, ::Io::Info* request, ::grpc::experimental::ClientReadReactor< ::Io::Chunk>* reactor) {
+  ::grpc::internal::ClientCallbackReaderFactory< ::Io::Chunk>::Create(stub_->channel_.get(), stub_->rpcmethod_Receive_, context, request, reactor);
 }
 
-::grpc::ClientAsyncReader< ::Io::Chunk>* FilesTransfer::Stub::AsyncDownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::Io::Chunk>::Create(channel_.get(), cq, rpcmethod_Download_, context, request, true, tag);
+::grpc::ClientAsyncReader< ::Io::Chunk>* Transfer::Stub::AsyncReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::Io::Chunk>::Create(channel_.get(), cq, rpcmethod_Receive_, context, request, true, tag);
 }
 
-::grpc::ClientAsyncReader< ::Io::Chunk>* FilesTransfer::Stub::PrepareAsyncDownloadRaw(::grpc::ClientContext* context, const ::Io::FileInfo& request, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncReaderFactory< ::Io::Chunk>::Create(channel_.get(), cq, rpcmethod_Download_, context, request, false, nullptr);
+::grpc::ClientAsyncReader< ::Io::Chunk>* Transfer::Stub::PrepareAsyncReceiveRaw(::grpc::ClientContext* context, const ::Io::Info& request, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncReaderFactory< ::Io::Chunk>::Create(channel_.get(), cq, rpcmethod_Receive_, context, request, false, nullptr);
 }
 
-::grpc::ClientWriter< ::Io::Packet>* FilesTransfer::Stub::UploadRaw(::grpc::ClientContext* context, ::Io::Status* response) {
-  return ::grpc::internal::ClientWriterFactory< ::Io::Packet>::Create(channel_.get(), rpcmethod_Upload_, context, response);
+::grpc::ClientWriter< ::Io::Packet>* Transfer::Stub::SendRaw(::grpc::ClientContext* context, ::Io::Status* response) {
+  return ::grpc::internal::ClientWriterFactory< ::Io::Packet>::Create(channel_.get(), rpcmethod_Send_, context, response);
 }
 
-void FilesTransfer::Stub::experimental_async::Upload(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::experimental::ClientWriteReactor< ::Io::Packet>* reactor) {
-  ::grpc::internal::ClientCallbackWriterFactory< ::Io::Packet>::Create(stub_->channel_.get(), stub_->rpcmethod_Upload_, context, response, reactor);
+void Transfer::Stub::experimental_async::Send(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::experimental::ClientWriteReactor< ::Io::Packet>* reactor) {
+  ::grpc::internal::ClientCallbackWriterFactory< ::Io::Packet>::Create(stub_->channel_.get(), stub_->rpcmethod_Send_, context, response, reactor);
 }
 
-::grpc::ClientAsyncWriter< ::Io::Packet>* FilesTransfer::Stub::AsyncUploadRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) {
-  return ::grpc::internal::ClientAsyncWriterFactory< ::Io::Packet>::Create(channel_.get(), cq, rpcmethod_Upload_, context, response, true, tag);
+::grpc::ClientAsyncWriter< ::Io::Packet>* Transfer::Stub::AsyncSendRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq, void* tag) {
+  return ::grpc::internal::ClientAsyncWriterFactory< ::Io::Packet>::Create(channel_.get(), cq, rpcmethod_Send_, context, response, true, tag);
 }
 
-::grpc::ClientAsyncWriter< ::Io::Packet>* FilesTransfer::Stub::PrepareAsyncUploadRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) {
-  return ::grpc::internal::ClientAsyncWriterFactory< ::Io::Packet>::Create(channel_.get(), cq, rpcmethod_Upload_, context, response, false, nullptr);
+::grpc::ClientAsyncWriter< ::Io::Packet>* Transfer::Stub::PrepareAsyncSendRaw(::grpc::ClientContext* context, ::Io::Status* response, ::grpc::CompletionQueue* cq) {
+  return ::grpc::internal::ClientAsyncWriterFactory< ::Io::Packet>::Create(channel_.get(), cq, rpcmethod_Send_, context, response, false, nullptr);
 }
 
-FilesTransfer::Service::Service() {
+Transfer::Service::Service() {
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FilesTransfer_method_names[0],
+      Transfer_method_names[0],
       ::grpc::internal::RpcMethod::SERVER_STREAMING,
-      new ::grpc::internal::ServerStreamingHandler< FilesTransfer::Service, ::Io::FileInfo, ::Io::Chunk>(
-          [](FilesTransfer::Service* service,
+      new ::grpc::internal::ServerStreamingHandler< Transfer::Service, ::Io::Info, ::Io::Chunk>(
+          [](Transfer::Service* service,
              ::grpc::ServerContext* ctx,
-             const ::Io::FileInfo* req,
+             const ::Io::Info* req,
              ::grpc::ServerWriter<::Io::Chunk>* writer) {
-               return service->Download(ctx, req, writer);
+               return service->Receive(ctx, req, writer);
              }, this)));
   AddMethod(new ::grpc::internal::RpcServiceMethod(
-      FilesTransfer_method_names[1],
+      Transfer_method_names[1],
       ::grpc::internal::RpcMethod::CLIENT_STREAMING,
-      new ::grpc::internal::ClientStreamingHandler< FilesTransfer::Service, ::Io::Packet, ::Io::Status>(
-          [](FilesTransfer::Service* service,
+      new ::grpc::internal::ClientStreamingHandler< Transfer::Service, ::Io::Packet, ::Io::Status>(
+          [](Transfer::Service* service,
              ::grpc::ServerContext* ctx,
              ::grpc::ServerReader<::Io::Packet>* reader,
              ::Io::Status* resp) {
-               return service->Upload(ctx, reader, resp);
+               return service->Send(ctx, reader, resp);
              }, this)));
 }
 
-FilesTransfer::Service::~Service() {
+Transfer::Service::~Service() {
 }
 
-::grpc::Status FilesTransfer::Service::Download(::grpc::ServerContext* context, const ::Io::FileInfo* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) {
+::grpc::Status Transfer::Service::Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) {
   (void) context;
   (void) request;
   (void) writer;
   return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
 }
 
-::grpc::Status FilesTransfer::Service::Upload(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) {
+::grpc::Status Transfer::Service::Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) {
   (void) context;
   (void) reader;
   (void) response;

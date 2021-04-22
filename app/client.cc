@@ -44,12 +44,12 @@ int main(int argc, char** argv) {
         if (method == "download") {
             std::cout << "downloading file from " << server_address << ":" << from << " to " << to << '\n';
             ::grpc::ClientContext context;
-            client.Download(from, to, &context);
+            client.Receive(from, to, &context);
         }
         else if (method == "upload") {
             std::cout << "uploading file from " << from << " to " << server_address << ":" << to << '\n';
             ::grpc::ClientContext context;
-            client.Upload(from, to, &context);
+            client.Send(from, to, &context);
         }
         else {
             std::cout << "unknown --method\n";

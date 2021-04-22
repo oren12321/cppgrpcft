@@ -57,9 +57,9 @@ namespace Io {
 class Chunk;
 class ChunkDefaultTypeInternal;
 extern ChunkDefaultTypeInternal _Chunk_default_instance_;
-class FileInfo;
-class FileInfoDefaultTypeInternal;
-extern FileInfoDefaultTypeInternal _FileInfo_default_instance_;
+class Info;
+class InfoDefaultTypeInternal;
+extern InfoDefaultTypeInternal _Info_default_instance_;
 class Packet;
 class PacketDefaultTypeInternal;
 extern PacketDefaultTypeInternal _Packet_default_instance_;
@@ -69,7 +69,7 @@ extern StatusDefaultTypeInternal _Status_default_instance_;
 }  // namespace Io
 PROTOBUF_NAMESPACE_OPEN
 template<> ::Io::Chunk* Arena::CreateMaybeMessage<::Io::Chunk>(Arena*);
-template<> ::Io::FileInfo* Arena::CreateMaybeMessage<::Io::FileInfo>(Arena*);
+template<> ::Io::Info* Arena::CreateMaybeMessage<::Io::Info>(Arena*);
 template<> ::Io::Packet* Arena::CreateMaybeMessage<::Io::Packet>(Arena*);
 template<> ::Io::Status* Arena::CreateMaybeMessage<::Io::Status>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
@@ -77,23 +77,23 @@ namespace Io {
 
 // ===================================================================
 
-class FileInfo PROTOBUF_FINAL :
-    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Io.FileInfo) */ {
+class Info PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Io.Info) */ {
  public:
-  inline FileInfo() : FileInfo(nullptr) {}
-  virtual ~FileInfo();
+  inline Info() : Info(nullptr) {}
+  virtual ~Info();
 
-  FileInfo(const FileInfo& from);
-  FileInfo(FileInfo&& from) noexcept
-    : FileInfo() {
+  Info(const Info& from);
+  Info(Info&& from) noexcept
+    : Info() {
     *this = ::std::move(from);
   }
 
-  inline FileInfo& operator=(const FileInfo& from) {
+  inline Info& operator=(const Info& from) {
     CopyFrom(from);
     return *this;
   }
-  inline FileInfo& operator=(FileInfo&& from) noexcept {
+  inline Info& operator=(Info&& from) noexcept {
     if (GetArena() == from.GetArena()) {
       if (this != &from) InternalSwap(&from);
     } else {
@@ -111,19 +111,19 @@ class FileInfo PROTOBUF_FINAL :
   static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
     return GetMetadataStatic().reflection;
   }
-  static const FileInfo& default_instance();
+  static const Info& default_instance();
 
-  static inline const FileInfo* internal_default_instance() {
-    return reinterpret_cast<const FileInfo*>(
-               &_FileInfo_default_instance_);
+  static inline const Info* internal_default_instance() {
+    return reinterpret_cast<const Info*>(
+               &_Info_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
     0;
 
-  friend void swap(FileInfo& a, FileInfo& b) {
+  friend void swap(Info& a, Info& b) {
     a.Swap(&b);
   }
-  inline void Swap(FileInfo* other) {
+  inline void Swap(Info* other) {
     if (other == this) return;
     if (GetArena() == other->GetArena()) {
       InternalSwap(other);
@@ -131,7 +131,7 @@ class FileInfo PROTOBUF_FINAL :
       ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
     }
   }
-  void UnsafeArenaSwap(FileInfo* other) {
+  void UnsafeArenaSwap(Info* other) {
     if (other == this) return;
     GOOGLE_DCHECK(GetArena() == other->GetArena());
     InternalSwap(other);
@@ -139,17 +139,17 @@ class FileInfo PROTOBUF_FINAL :
 
   // implements Message ----------------------------------------------
 
-  inline FileInfo* New() const final {
-    return CreateMaybeMessage<FileInfo>(nullptr);
+  inline Info* New() const final {
+    return CreateMaybeMessage<Info>(nullptr);
   }
 
-  FileInfo* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
-    return CreateMaybeMessage<FileInfo>(arena);
+  Info* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<Info>(arena);
   }
   void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
   void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
-  void CopyFrom(const FileInfo& from);
-  void MergeFrom(const FileInfo& from);
+  void CopyFrom(const Info& from);
+  void MergeFrom(const Info& from);
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
 
@@ -163,13 +163,13 @@ class FileInfo PROTOBUF_FINAL :
   inline void SharedCtor();
   inline void SharedDtor();
   void SetCachedSize(int size) const final;
-  void InternalSwap(FileInfo* other);
+  void InternalSwap(Info* other);
   friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
   static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
-    return "Io.FileInfo";
+    return "Io.Info";
   }
   protected:
-  explicit FileInfo(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  explicit Info(::PROTOBUF_NAMESPACE_ID::Arena* arena);
   private:
   static void ArenaDtor(void* object);
   inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
@@ -189,32 +189,32 @@ class FileInfo PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPathFieldNumber = 1,
+    kMsgFieldNumber = 1,
   };
-  // string path = 1;
-  void clear_path();
-  const std::string& path() const;
-  void set_path(const std::string& value);
-  void set_path(std::string&& value);
-  void set_path(const char* value);
-  void set_path(const char* value, size_t size);
-  std::string* mutable_path();
-  std::string* release_path();
-  void set_allocated_path(std::string* path);
+  // string msg = 1;
+  void clear_msg();
+  const std::string& msg() const;
+  void set_msg(const std::string& value);
+  void set_msg(std::string&& value);
+  void set_msg(const char* value);
+  void set_msg(const char* value, size_t size);
+  std::string* mutable_msg();
+  std::string* release_msg();
+  void set_allocated_msg(std::string* msg);
   private:
-  const std::string& _internal_path() const;
-  void _internal_set_path(const std::string& value);
-  std::string* _internal_mutable_path();
+  const std::string& _internal_msg() const;
+  void _internal_set_msg(const std::string& value);
+  std::string* _internal_mutable_msg();
   public:
 
-  // @@protoc_insertion_point(class_scope:Io.FileInfo)
+  // @@protoc_insertion_point(class_scope:Io.Info)
  private:
   class _Internal;
 
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr path_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr msg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_io_2eproto;
 };
@@ -400,7 +400,7 @@ class Packet PROTOBUF_FINAL :
   static const Packet& default_instance();
 
   enum PacketOptionsCase {
-    kFileInfo = 1,
+    kInfo = 1,
     kChunk = 2,
     PACKETOPTIONS_NOT_SET = 0,
   };
@@ -481,26 +481,26 @@ class Packet PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kFileInfoFieldNumber = 1,
+    kInfoFieldNumber = 1,
     kChunkFieldNumber = 2,
   };
-  // .Io.FileInfo fileInfo = 1;
-  bool has_fileinfo() const;
+  // .Io.Info info = 1;
+  bool has_info() const;
   private:
-  bool _internal_has_fileinfo() const;
+  bool _internal_has_info() const;
   public:
-  void clear_fileinfo();
-  const ::Io::FileInfo& fileinfo() const;
-  ::Io::FileInfo* release_fileinfo();
-  ::Io::FileInfo* mutable_fileinfo();
-  void set_allocated_fileinfo(::Io::FileInfo* fileinfo);
+  void clear_info();
+  const ::Io::Info& info() const;
+  ::Io::Info* release_info();
+  ::Io::Info* mutable_info();
+  void set_allocated_info(::Io::Info* info);
   private:
-  const ::Io::FileInfo& _internal_fileinfo() const;
-  ::Io::FileInfo* _internal_mutable_fileinfo();
+  const ::Io::Info& _internal_info() const;
+  ::Io::Info* _internal_mutable_info();
   public:
-  void unsafe_arena_set_allocated_fileinfo(
-      ::Io::FileInfo* fileinfo);
-  ::Io::FileInfo* unsafe_arena_release_fileinfo();
+  void unsafe_arena_set_allocated_info(
+      ::Io::Info* info);
+  ::Io::Info* unsafe_arena_release_info();
 
   // .Io.Chunk chunk = 2;
   bool has_chunk() const;
@@ -525,7 +525,7 @@ class Packet PROTOBUF_FINAL :
   // @@protoc_insertion_point(class_scope:Io.Packet)
  private:
   class _Internal;
-  void set_has_fileinfo();
+  void set_has_info();
   void set_has_chunk();
 
   inline bool has_packetOptions() const;
@@ -536,7 +536,7 @@ class Packet PROTOBUF_FINAL :
   typedef void DestructorSkippable_;
   union PacketOptionsUnion {
     PacketOptionsUnion() {}
-    ::Io::FileInfo* fileinfo_;
+    ::Io::Info* info_;
     ::Io::Chunk* chunk_;
   } packetOptions_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
@@ -658,23 +658,23 @@ class Status PROTOBUF_FINAL :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMsgFieldNumber = 2,
+    kDescFieldNumber = 2,
     kSuccessFieldNumber = 1,
   };
-  // string msg = 2;
-  void clear_msg();
-  const std::string& msg() const;
-  void set_msg(const std::string& value);
-  void set_msg(std::string&& value);
-  void set_msg(const char* value);
-  void set_msg(const char* value, size_t size);
-  std::string* mutable_msg();
-  std::string* release_msg();
-  void set_allocated_msg(std::string* msg);
+  // string desc = 2;
+  void clear_desc();
+  const std::string& desc() const;
+  void set_desc(const std::string& value);
+  void set_desc(std::string&& value);
+  void set_desc(const char* value);
+  void set_desc(const char* value, size_t size);
+  std::string* mutable_desc();
+  std::string* release_desc();
+  void set_allocated_desc(std::string* desc);
   private:
-  const std::string& _internal_msg() const;
-  void _internal_set_msg(const std::string& value);
-  std::string* _internal_mutable_msg();
+  const std::string& _internal_desc() const;
+  void _internal_set_desc(const std::string& value);
+  std::string* _internal_mutable_desc();
   public:
 
   // bool success = 1;
@@ -693,7 +693,7 @@ class Status PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr msg_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr desc_;
   bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_io_2eproto;
@@ -707,67 +707,67 @@ class Status PROTOBUF_FINAL :
   #pragma GCC diagnostic push
   #pragma GCC diagnostic ignored "-Wstrict-aliasing"
 #endif  // __GNUC__
-// FileInfo
+// Info
 
-// string path = 1;
-inline void FileInfo::clear_path() {
-  path_.ClearToEmpty();
+// string msg = 1;
+inline void Info::clear_msg() {
+  msg_.ClearToEmpty();
 }
-inline const std::string& FileInfo::path() const {
-  // @@protoc_insertion_point(field_get:Io.FileInfo.path)
-  return _internal_path();
+inline const std::string& Info::msg() const {
+  // @@protoc_insertion_point(field_get:Io.Info.msg)
+  return _internal_msg();
 }
-inline void FileInfo::set_path(const std::string& value) {
-  _internal_set_path(value);
-  // @@protoc_insertion_point(field_set:Io.FileInfo.path)
+inline void Info::set_msg(const std::string& value) {
+  _internal_set_msg(value);
+  // @@protoc_insertion_point(field_set:Io.Info.msg)
 }
-inline std::string* FileInfo::mutable_path() {
-  // @@protoc_insertion_point(field_mutable:Io.FileInfo.path)
-  return _internal_mutable_path();
+inline std::string* Info::mutable_msg() {
+  // @@protoc_insertion_point(field_mutable:Io.Info.msg)
+  return _internal_mutable_msg();
 }
-inline const std::string& FileInfo::_internal_path() const {
-  return path_.Get();
+inline const std::string& Info::_internal_msg() const {
+  return msg_.Get();
 }
-inline void FileInfo::_internal_set_path(const std::string& value) {
+inline void Info::_internal_set_msg(const std::string& value) {
   
-  path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
-inline void FileInfo::set_path(std::string&& value) {
+inline void Info::set_msg(std::string&& value) {
   
-  path_.Set(
+  msg_.Set(
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:Io.FileInfo.path)
+  // @@protoc_insertion_point(field_set_rvalue:Io.Info.msg)
 }
-inline void FileInfo::set_path(const char* value) {
+inline void Info::set_msg(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:Io.FileInfo.path)
+  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:Io.Info.msg)
 }
-inline void FileInfo::set_path(const char* value,
+inline void Info::set_msg(const char* value,
     size_t size) {
   
-  path_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:Io.FileInfo.path)
+  // @@protoc_insertion_point(field_set_pointer:Io.Info.msg)
 }
-inline std::string* FileInfo::_internal_mutable_path() {
+inline std::string* Info::_internal_mutable_msg() {
   
-  return path_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+  return msg_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
-inline std::string* FileInfo::release_path() {
-  // @@protoc_insertion_point(field_release:Io.FileInfo.path)
-  return path_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline std::string* Info::release_msg() {
+  // @@protoc_insertion_point(field_release:Io.Info.msg)
+  return msg_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline void FileInfo::set_allocated_path(std::string* path) {
-  if (path != nullptr) {
+inline void Info::set_allocated_msg(std::string* msg) {
+  if (msg != nullptr) {
     
   } else {
     
   }
-  path_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), path,
+  msg_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), msg,
       GetArena());
-  // @@protoc_insertion_point(field_set_allocated:Io.FileInfo.path)
+  // @@protoc_insertion_point(field_set_allocated:Io.Info.msg)
 }
 
 // -------------------------------------------------------------------
@@ -839,77 +839,77 @@ inline void Chunk::set_allocated_data(std::string* data) {
 
 // Packet
 
-// .Io.FileInfo fileInfo = 1;
-inline bool Packet::_internal_has_fileinfo() const {
-  return packetOptions_case() == kFileInfo;
+// .Io.Info info = 1;
+inline bool Packet::_internal_has_info() const {
+  return packetOptions_case() == kInfo;
 }
-inline bool Packet::has_fileinfo() const {
-  return _internal_has_fileinfo();
+inline bool Packet::has_info() const {
+  return _internal_has_info();
 }
-inline void Packet::set_has_fileinfo() {
-  _oneof_case_[0] = kFileInfo;
+inline void Packet::set_has_info() {
+  _oneof_case_[0] = kInfo;
 }
-inline void Packet::clear_fileinfo() {
-  if (_internal_has_fileinfo()) {
+inline void Packet::clear_info() {
+  if (_internal_has_info()) {
     if (GetArena() == nullptr) {
-      delete packetOptions_.fileinfo_;
+      delete packetOptions_.info_;
     }
     clear_has_packetOptions();
   }
 }
-inline ::Io::FileInfo* Packet::release_fileinfo() {
-  // @@protoc_insertion_point(field_release:Io.Packet.fileInfo)
-  if (_internal_has_fileinfo()) {
+inline ::Io::Info* Packet::release_info() {
+  // @@protoc_insertion_point(field_release:Io.Packet.info)
+  if (_internal_has_info()) {
     clear_has_packetOptions();
-      ::Io::FileInfo* temp = packetOptions_.fileinfo_;
+      ::Io::Info* temp = packetOptions_.info_;
     if (GetArena() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    packetOptions_.fileinfo_ = nullptr;
+    packetOptions_.info_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline const ::Io::FileInfo& Packet::_internal_fileinfo() const {
-  return _internal_has_fileinfo()
-      ? *packetOptions_.fileinfo_
-      : reinterpret_cast< ::Io::FileInfo&>(::Io::_FileInfo_default_instance_);
+inline const ::Io::Info& Packet::_internal_info() const {
+  return _internal_has_info()
+      ? *packetOptions_.info_
+      : reinterpret_cast< ::Io::Info&>(::Io::_Info_default_instance_);
 }
-inline const ::Io::FileInfo& Packet::fileinfo() const {
-  // @@protoc_insertion_point(field_get:Io.Packet.fileInfo)
-  return _internal_fileinfo();
+inline const ::Io::Info& Packet::info() const {
+  // @@protoc_insertion_point(field_get:Io.Packet.info)
+  return _internal_info();
 }
-inline ::Io::FileInfo* Packet::unsafe_arena_release_fileinfo() {
-  // @@protoc_insertion_point(field_unsafe_arena_release:Io.Packet.fileInfo)
-  if (_internal_has_fileinfo()) {
+inline ::Io::Info* Packet::unsafe_arena_release_info() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:Io.Packet.info)
+  if (_internal_has_info()) {
     clear_has_packetOptions();
-    ::Io::FileInfo* temp = packetOptions_.fileinfo_;
-    packetOptions_.fileinfo_ = nullptr;
+    ::Io::Info* temp = packetOptions_.info_;
+    packetOptions_.info_ = nullptr;
     return temp;
   } else {
     return nullptr;
   }
 }
-inline void Packet::unsafe_arena_set_allocated_fileinfo(::Io::FileInfo* fileinfo) {
+inline void Packet::unsafe_arena_set_allocated_info(::Io::Info* info) {
   clear_packetOptions();
-  if (fileinfo) {
-    set_has_fileinfo();
-    packetOptions_.fileinfo_ = fileinfo;
+  if (info) {
+    set_has_info();
+    packetOptions_.info_ = info;
   }
-  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Io.Packet.fileInfo)
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Io.Packet.info)
 }
-inline ::Io::FileInfo* Packet::_internal_mutable_fileinfo() {
-  if (!_internal_has_fileinfo()) {
+inline ::Io::Info* Packet::_internal_mutable_info() {
+  if (!_internal_has_info()) {
     clear_packetOptions();
-    set_has_fileinfo();
-    packetOptions_.fileinfo_ = CreateMaybeMessage< ::Io::FileInfo >(GetArena());
+    set_has_info();
+    packetOptions_.info_ = CreateMaybeMessage< ::Io::Info >(GetArena());
   }
-  return packetOptions_.fileinfo_;
+  return packetOptions_.info_;
 }
-inline ::Io::FileInfo* Packet::mutable_fileinfo() {
-  // @@protoc_insertion_point(field_mutable:Io.Packet.fileInfo)
-  return _internal_mutable_fileinfo();
+inline ::Io::Info* Packet::mutable_info() {
+  // @@protoc_insertion_point(field_mutable:Io.Packet.info)
+  return _internal_mutable_info();
 }
 
 // .Io.Chunk chunk = 2;
@@ -1018,65 +1018,65 @@ inline void Status::set_success(bool value) {
   // @@protoc_insertion_point(field_set:Io.Status.success)
 }
 
-// string msg = 2;
-inline void Status::clear_msg() {
-  msg_.ClearToEmpty();
+// string desc = 2;
+inline void Status::clear_desc() {
+  desc_.ClearToEmpty();
 }
-inline const std::string& Status::msg() const {
-  // @@protoc_insertion_point(field_get:Io.Status.msg)
-  return _internal_msg();
+inline const std::string& Status::desc() const {
+  // @@protoc_insertion_point(field_get:Io.Status.desc)
+  return _internal_desc();
 }
-inline void Status::set_msg(const std::string& value) {
-  _internal_set_msg(value);
-  // @@protoc_insertion_point(field_set:Io.Status.msg)
+inline void Status::set_desc(const std::string& value) {
+  _internal_set_desc(value);
+  // @@protoc_insertion_point(field_set:Io.Status.desc)
 }
-inline std::string* Status::mutable_msg() {
-  // @@protoc_insertion_point(field_mutable:Io.Status.msg)
-  return _internal_mutable_msg();
+inline std::string* Status::mutable_desc() {
+  // @@protoc_insertion_point(field_mutable:Io.Status.desc)
+  return _internal_mutable_desc();
 }
-inline const std::string& Status::_internal_msg() const {
-  return msg_.Get();
+inline const std::string& Status::_internal_desc() const {
+  return desc_.Get();
 }
-inline void Status::_internal_set_msg(const std::string& value) {
+inline void Status::_internal_set_desc(const std::string& value) {
   
-  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
+  desc_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
 }
-inline void Status::set_msg(std::string&& value) {
+inline void Status::set_desc(std::string&& value) {
   
-  msg_.Set(
+  desc_.Set(
     ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:Io.Status.msg)
+  // @@protoc_insertion_point(field_set_rvalue:Io.Status.desc)
 }
-inline void Status::set_msg(const char* value) {
+inline void Status::set_desc(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
   
-  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:Io.Status.msg)
+  desc_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
+  // @@protoc_insertion_point(field_set_char:Io.Status.desc)
 }
-inline void Status::set_msg(const char* value,
+inline void Status::set_desc(const char* value,
     size_t size) {
   
-  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
+  desc_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
       reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:Io.Status.msg)
+  // @@protoc_insertion_point(field_set_pointer:Io.Status.desc)
 }
-inline std::string* Status::_internal_mutable_msg() {
+inline std::string* Status::_internal_mutable_desc() {
   
-  return msg_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
+  return desc_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
 }
-inline std::string* Status::release_msg() {
-  // @@protoc_insertion_point(field_release:Io.Status.msg)
-  return msg_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+inline std::string* Status::release_desc() {
+  // @@protoc_insertion_point(field_release:Io.Status.desc)
+  return desc_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
 }
-inline void Status::set_allocated_msg(std::string* msg) {
-  if (msg != nullptr) {
+inline void Status::set_allocated_desc(std::string* desc) {
+  if (desc != nullptr) {
     
   } else {
     
   }
-  msg_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), msg,
+  desc_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), desc,
       GetArena());
-  // @@protoc_insertion_point(field_set_allocated:Io.Status.msg)
+  // @@protoc_insertion_point(field_set_allocated:Io.Status.desc)
 }
 
 #ifdef __GNUC__

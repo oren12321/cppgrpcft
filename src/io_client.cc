@@ -13,7 +13,7 @@
 
 #include "io_interfaces.h"
 
-void FilesTransferClient::Download(std::string from, std::string to, ::grpc::ClientContext* context) {
+void FilesTransferClient::Receive(std::string from, std::string to, ::grpc::ClientContext* context) {
 
     std::ofstream ofs(to, std::ios::out | std::ios::binary);
     if (!ofs.is_open()) {
@@ -22,9 +22,9 @@ void FilesTransferClient::Download(std::string from, std::string to, ::grpc::Cli
         throw std::runtime_error(ss.str());
     }
 
-    ::Io::FileInfo fileInfo;
-    fileInfo.set_path(from);
-    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Download(context, fileInfo));
+    ::Io::Info info;
+    info.set_msg(from);
+    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Receive(context, info));
 
     ::Io::Chunk chunk;
     while (reader->Read(&chunk)) {
@@ -44,7 +44,7 @@ void FilesTransferClient::Download(std::string from, std::string to, ::grpc::Cli
     }
 }
 
-void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::ClientContext* context) {
+void FilesTransferClient::Send(std::string from, std::string to, ::grpc::ClientContext* context) {
 
     std::ifstream ifs(from, std::ios::in | std::ios::binary);
     if (!ifs.is_open()) {
@@ -61,10 +61,10 @@ void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::Clien
     }
 
     ::Io::Status ioStatus;
-    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Upload(context, &ioStatus));
+    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Send(context, &ioStatus));
 
     ::Io::Packet header;
-    header.mutable_fileinfo()->set_path(to);
+    header.mutable_info()->set_msg(to);
     if(!writer->Write(header))
     {
         writer->WritesDone();
@@ -72,7 +72,7 @@ void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::Clien
         ::grpc::Status status = writer->Finish();
         if (!status.ok()) {
             std::stringstream ss;
-            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
+            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.desc() << ')';
             throw std::runtime_error(ss.str());
         }
     }
@@ -97,19 +97,19 @@ void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::Clien
     ::grpc::Status status = writer->Finish();
     if (!status.ok()) {
         std::stringstream ss;
-        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
+        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.desc() << ')';
         throw std::runtime_error(ss.str());
     }
 }
 
-void BytesTransferClient::Download(std::string from, std::string to, BytesReceiver* receiver, ::grpc::ClientContext* context) {
+void BytesTransferClient::Receive(std::string streamerMsg, std::string receiverMsg, BytesReceiver* receiver, ::grpc::ClientContext* context) {
 
     if (receiver == nullptr) {
         throw std::runtime_error( "uninitialized bytes receiver");
     }
 
     try {
-        receiver->init(to);
+        receiver->init(receiverMsg);
     }
     catch(const std::exception& ex) {
         std::stringstream ss;
@@ -117,9 +117,9 @@ void BytesTransferClient::Download(std::string from, std::string to, BytesReceiv
         throw std::runtime_error(ss.str());
     }
 
-    ::Io::FileInfo fileInfo;
-    fileInfo.set_path(from);
-    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Download(context, fileInfo));
+    ::Io::Info info;
+    info.set_msg(streamerMsg);
+    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Receive(context, info));
 
     ::Io::Chunk chunk;
     while (reader->Read(&chunk)) {
@@ -151,14 +151,14 @@ void BytesTransferClient::Download(std::string from, std::string to, BytesReceiv
     }
 }
 
-void BytesTransferClient::Upload(std::string from, std::string to, BytesStreamer* streamer, ::grpc::ClientContext* context) {
+void BytesTransferClient::Send(std::string streamerMsg, std::string receiverMsg, BytesStreamer* streamer, ::grpc::ClientContext* context) {
 
     if (streamer == nullptr) {
         throw std::runtime_error("uninitialized bytes streamer");
     }
 
     try {
-        streamer->init(from);
+        streamer->init(streamerMsg);
     }
     catch(const std::exception& ex) {
         std::stringstream ss;
@@ -167,10 +167,10 @@ void BytesTransferClient::Upload(std::string from, std::string to, BytesStreamer
     }
 
     ::Io::Status ioStatus;
-    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Upload(context, &ioStatus));
+    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Send(context, &ioStatus));
 
     ::Io::Packet header;
-    header.mutable_fileinfo()->set_path(to);
+    header.mutable_info()->set_msg(receiverMsg);
     if(!writer->Write(header))
     {
         writer->WritesDone();
@@ -178,7 +178,7 @@ void BytesTransferClient::Upload(std::string from, std::string to, BytesStreamer
         ::grpc::Status status = writer->Finish();
         if (!status.ok()) {
             std::stringstream ss;
-            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
+            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.desc() << ')';
             throw std::runtime_error(ss.str());
         }
     }
@@ -211,7 +211,7 @@ void BytesTransferClient::Upload(std::string from, std::string to, BytesStreamer
     ::grpc::Status status = writer->Finish();
     if (!status.ok()) {
         std::stringstream ss;
-        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
+        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.desc() << ')';
         throw std::runtime_error(ss.str());
     }
 }

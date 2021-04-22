@@ -7,19 +7,19 @@
 
 #include "io_interfaces.h"
 
-class FilesTransferImpl final : public ::Io::FilesTransfer::Service {
+class FilesTransfer final : public ::Io::Transfer::Service {
 
-    ::grpc::Status Download(::grpc::ServerContext* context, const ::Io::FileInfo* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) override;
+    ::grpc::Status Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) override;
 
-    ::grpc::Status Upload(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) override;
+    ::grpc::Status Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) override;
 
 };
 
-class BytesTransferImpl final : public ::Io::FilesTransfer::Service {
+class BytesTransfer final : public ::Io::Transfer::Service {
 
-    ::grpc::Status Download(::grpc::ServerContext* context, const ::Io::FileInfo* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) override;
+    ::grpc::Status Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) override;
 
-    ::grpc::Status Upload(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) override;
+    ::grpc::Status Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) override;
 
     BytesStreamer* _streamer = nullptr;
     BytesReceiver* _receiver = nullptr;

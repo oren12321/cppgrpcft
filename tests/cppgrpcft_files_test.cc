@@ -67,7 +67,7 @@ TEST_F(CppGrpcFT_File, FileDownload) {
 
     ::grpc::ServerBuilder builder;
     builder.AddListeningPort("0.0.0.0:50051", ::grpc::InsecureServerCredentials());
-    FilesTransferImpl service;
+    FilesTransfer service;
     builder.RegisterService(&service);
     
     std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
@@ -78,7 +78,7 @@ TEST_F(CppGrpcFT_File, FileDownload) {
     
     try {
         ::grpc::ClientContext context;
-        client.Download(_from, _to, &context);
+        client.Receive(_from, _to, &context);
     } catch (const std::exception& ex) {
         FAIL() << "failed to download file: " << ex.what();
     } catch (...) {
@@ -113,7 +113,7 @@ TEST_F(CppGrpcFT_File, FileUpload) {
 
     ::grpc::ServerBuilder builder;
     builder.AddListeningPort("0.0.0.0:50051", ::grpc::InsecureServerCredentials());
-    FilesTransferImpl service;
+    FilesTransfer service;
     builder.RegisterService(&service);
     
     std::unique_ptr<::grpc::Server> server(builder.BuildAndStart());
@@ -124,7 +124,7 @@ TEST_F(CppGrpcFT_File, FileUpload) {
     
     try {
         ::grpc::ClientContext context;
-        client.Upload(_from, _to, &context);
+        client.Send(_from, _to, &context);
     } catch (const std::exception& ex) {
         FAIL() << "failed to download file: " << ex.what();
     } catch (...) {

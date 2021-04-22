@@ -13,27 +13,27 @@
 class FilesTransferClient {
 public:
     FilesTransferClient(std::shared_ptr<::grpc::Channel> channel)
-        : stub_(::Io::FilesTransfer::NewStub(channel)) {}
+        : stub_(::Io::Transfer::NewStub(channel)) {}
 
-    void Download(std::string from, std::string to, ::grpc::ClientContext* context);
+    void Receive(std::string from, std::string to, ::grpc::ClientContext* context);
 
-    void Upload(std::string from, std::string to, ::grpc::ClientContext* context);
+    void Send(std::string from, std::string to, ::grpc::ClientContext* context);
 
 private:
-    std::unique_ptr<Io::FilesTransfer::Stub> stub_;
+    std::unique_ptr<Io::Transfer::Stub> stub_;
 };
 
 class BytesTransferClient {
 public:
     BytesTransferClient(std::shared_ptr<::grpc::Channel> channel)
-        : stub_(::Io::FilesTransfer::NewStub(channel)) {}
+        : stub_(::Io::Transfer::NewStub(channel)) {}
 
-    void Download(std::string from, std::string to, BytesReceiver* receiver, ::grpc::ClientContext* context);
+    void Receive(std::string streamerMsg, std::string receiverMsg, BytesReceiver* receiver, ::grpc::ClientContext* context);
 
-    void Upload(std::string from, std::string to, BytesStreamer* streamer, ::grpc::ClientContext* context);
+    void Send(std::string streamerMsg, std::string receiverMsg, BytesStreamer* streamer, ::grpc::ClientContext* context);
 
 private:
-    std::unique_ptr<Io::FilesTransfer::Stub> stub_;
+    std::unique_ptr<Io::Transfer::Stub> stub_;
 };
 
 #endif

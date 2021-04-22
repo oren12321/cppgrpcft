@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
         server_address = mapped_args["--address"];
     }
 
-    FilesTransferImpl service;
+    FilesTransfer service;
 
     ::grpc::EnableDefaultHealthCheckService(true);
     ::grpc::reflection::InitProtoReflectionServerBuilderPlugin();
