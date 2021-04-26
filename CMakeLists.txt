@@ -9,8 +9,12 @@ message(STATUS "Using protobuf ${protobuf_VERSION}")
 find_package(gRPC REQUIRED)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
-set(hw_proto_srcs ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.pb.cc)
-set(hw_grpc_srcs ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.grpc.pb.cc)
+set(hw_proto_srcs
+    ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.pb.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/proto/file.pb.cc)
+set(hw_grpc_srcs
+    ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.grpc.pb.cc
+    ${CMAKE_CURRENT_SOURCE_DIR}/proto/file.grpc.pb.cc)
 
 add_library(cppgrpcft)
 target_sources(cppgrpcft
@@ -21,12 +25,20 @@ target_sources(cppgrpcft
         ${hw_grpc_srcs}
     PUBLIC
         src/io_server.h
-        src/io_client.h)
+        src/io_client.h
+        src/io_interfaces.h
+        src/file_interfaces.h)
 target_link_libraries(cppgrpcft
     gRPC::grpc++)
 
 install(TARGETS cppgrpcft DESTINATION lib)
-install(FILES src/io_server.h src/io_client.h DESTINATION include/cppgrpcft)
+install(
+    FILES 
+        src/io_server.h
+        src/io_client.h
+        src/io_interfaces.h
+        src/file_interfaces.h
+    DESTINATION include/cppgrpcft)
 
 add_executable(cppgrpcft-client
     app/client.cc)
@@ -52,7 +64,6 @@ find_package(GTest REQUIRED)
 
 add_executable(cppgrpcft-tests
     tests/main.cc
-    tests/cppgrpcft_files_test.cc
     tests/cppgrpcft_bytes_test.cc
     tests/utils.cc)
 target_link_libraries(cppgrpcft-tests

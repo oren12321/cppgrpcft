@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include <gtest/gtest.h>
 
 #include <cstdlib>
@@ -13,69 +15,60 @@
 #include <grpcpp/grpcpp.h>
 #include <grpcpp/health_check_service_interface.h>
 
+#include <google/protobuf/any.pb.h>
+
 #include "../src/io_client.h"
 #include "../src/io_server.h"
 #include "../src/io_interfaces.h"
+#include "../src/file_interfaces.h"
+
+#include "../proto/file.grpc.pb.h"
 
 #include "utils.h"
 
-class SimpleBufferStreamer : public BytesStreamer {
-public:
-    SimpleBufferStreamer(std::vector<char> buffer) {
-        _buffer = buffer;
-    }
+class CppGrpcFT_Bytes : public ::testing::Test {
+protected:
+    void SetUp() override {
+        _from = std::string{};
+        _to = std::string{};
 
-    void init(std::string msg) override {
-        _index = 0;
-    }
-
-    bool hasNext() override {
-        return _index < _buffer.size();
-    }
-
-    std::string getNext() {
-        if (_index + 1234 - 1 < _buffer.size()) {
-            std::string data(_buffer.data() + _index, 1234);
-            _index += 1234;
-            return data;
+        char buffer[1024];
+        if(std::tmpnam(buffer)) {
+            _from = buffer;
         }
-        int reminder = _buffer.size() - _index;
-        std::string data(_buffer.data() + _index, reminder);
-        _index += reminder;
-        return data;
+
+        if(std::tmpnam(buffer)) {
+            _to = buffer;
+        }
     }
 
-    void finalize() override { }
+    void TearDown() override {
+        std::remove(_from.data());
+        std::remove(_to.data());
+    }
 
-private:
-    std::vector<char> _buffer;
-    int _index;
+    std::string _from{};
+    std::string _to{};
 };
 
-class SimpleBufferReceiver : public BytesReceiver {
-public:
-    void init(std::string msg) override {
-        _buffer.clear();
-    }
+TEST_F(CppGrpcFT_Bytes, BytesDownload) {
 
-    void push(std::string data) override {
-        std::vector<char> tail(data.begin(), data.end());
-        _buffer.insert(_buffer.end(), tail.begin(), tail.end());
-    }
+    // Make tmp file to download.
 
-    void finalize() override { }
+    ASSERT_FALSE(_from.empty()) << "failed to generate tmp file name";
+    ASSERT_FALSE(_to.empty()) << "failed to generate tmp file name";
+    
+    std::ofstream ofs(_from, std::ios::out | std::ios::binary);
+    ASSERT_TRUE(ofs.good()) << "failed to create tmp file " << _from;
 
-    std::vector<char> buffer() { return _buffer; }
-
-private:
-    std::vector<char> _buffer;
-};
-
-TEST(CppGrpcFT_Bytes, BytesDownload) {
+    int size = 2048 * 1024 + 1024;
+    std::vector<char> buffer = generateRandomBuffer(size);
+    ofs.write(buffer.data(), buffer.size());
+    ofs.close();
 
     // Initialize receiver
 
-    SimpleBufferReceiver receiver;
+    FileReceiver receiver;
 
     // Start the server
 
@@ -91,20 +84,27 @@ TEST(CppGrpcFT_Bytes, BytesDownload) {
 
     // Initialize streamer
 
-    int size = 2048 * 1024 + 1024;
-    std::vector<char> buffer = generateRandomBuffer(size);
-
-    SimpleBufferStreamer streamer(buffer);
+    FileStreamer streamer;
 
     service.setStreamer(&streamer);
 
     // Run the client
 
     BytesTransferClient client(::grpc::CreateChannel("127.0.0.1:50051", ::grpc::InsecureChannelCredentials()));
-    
+
+    google::protobuf::Any fromAny;
+    ::Interfaces::File fromMsg;
+    fromMsg.set_path(_from);
+    fromAny.PackFrom(fromMsg);
+
+    google::protobuf::Any toAny;
+    ::Interfaces::File toMsg;
+    fromMsg.set_path(_to);
+    fromAny.PackFrom(toMsg);
+
     try {
         ::grpc::ClientContext context;
-        client.Receive("<unused>", "<unused>", &receiver, &context);
+        client.Receive(fromAny, toAny, &receiver, &context);
     } catch (const std::exception& ex) {
         FAIL() << "failed to download file: " << ex.what();
     } catch (...) {
@@ -113,18 +113,27 @@ TEST(CppGrpcFT_Bytes, BytesDownload) {
 
     // Compare downloaded bytes to remote bytes
     
-    ASSERT_TRUE(buffer == receiver.buffer());
-
+    ASSERT_TRUE(filesEqual(_from, _to));
 }
 
-TEST(CppGrpcFT_Bytes, BytesUpload) {
+TEST_F(CppGrpcFT_Bytes, BytesUpload) {
 
-    // Initialize streamer
+    // Make tmp file to download.
+
+    ASSERT_FALSE(_from.empty()) << "failed to generate tmp file name";
+    ASSERT_FALSE(_to.empty()) << "failed to generate tmp file name";
+    
+    std::ofstream ofs(_from, std::ios::out | std::ios::binary);
+    ASSERT_TRUE(ofs.good()) << "failed to create tmp file " << _from;
 
     int size = 2048 * 1024 + 1024;
     std::vector<char> buffer = generateRandomBuffer(size);
+    ofs.write(buffer.data(), buffer.size());
+    ofs.close();
 
-    SimpleBufferStreamer streamer(buffer);
+    // Initialize streamer
+
+    FileStreamer streamer;
 
     // Start the server
 
@@ -140,7 +149,7 @@ TEST(CppGrpcFT_Bytes, BytesUpload) {
 
     // Initialize receiver
 
-    SimpleBufferReceiver receiver;
+    FileReceiver receiver;
 
     service.setReceiver(&receiver);
 
@@ -148,9 +157,19 @@ TEST(CppGrpcFT_Bytes, BytesUpload) {
 
     BytesTransferClient client(::grpc::CreateChannel("127.0.0.1:50051", ::grpc::InsecureChannelCredentials()));
     
+    google::protobuf::Any fromAny;
+    ::Interfaces::File fromMsg;
+    fromMsg.set_path(_from);
+    fromAny.PackFrom(fromMsg);
+
+    google::protobuf::Any toAny;
+    ::Interfaces::File toMsg;
+    fromMsg.set_path(_to);
+    fromAny.PackFrom(toMsg);
+
     try {
         ::grpc::ClientContext context;
-        client.Send("<unused>", "<unused>", &streamer, &context);
+        client.Send(fromAny, toAny, &streamer, &context);
     } catch (const std::exception& ex) {
         FAIL() << "failed to download file: " << ex.what();
     } catch (...) {
@@ -159,6 +178,6 @@ TEST(CppGrpcFT_Bytes, BytesUpload) {
 
     // Compare downloaded file to remote file
     
-    ASSERT_TRUE(buffer == receiver.buffer());
+    ASSERT_TRUE(filesEqual(_from, _to));
 }
 

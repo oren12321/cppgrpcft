@@ -1,10 +1,18 @@
 #include <iostream>
 #include <stdexcept>
 #include <unordered_map>
+#include <memory>
 
 #include <grpcpp/grpcpp.h>
 
+#include <google/protobuf/any.pb.h>
+
 #include "../src/io_client.h"
+
+#include "../src/io_interfaces.h"
+#include "../src/file_interfaces.h"
+
+#include "../proto/file.pb.h"
 
 #include "args_parser.h"
 
@@ -33,7 +41,7 @@ int main(int argc, char** argv) {
     }
 
     try {
-        FilesTransferClient client(::grpc::CreateChannel(server_address, ::grpc::InsecureChannelCredentials()));
+        BytesTransferClient client(::grpc::CreateChannel(server_address, ::grpc::InsecureChannelCredentials()));
 
         if (method == "<unknown>" || from == "<unknown>" || to == "<unknown>") {
             std::cout << "missing command line argument(s)\n";
@@ -42,14 +50,38 @@ int main(int argc, char** argv) {
         }
 
         if (method == "download") {
+            google::protobuf::Any fromAny;
+            ::Interfaces::File fromMsg;
+            fromMsg.set_path(from);
+            fromAny.PackFrom(fromMsg);
+
+            google::protobuf::Any toAny;
+            ::Interfaces::File toMsg;
+            fromMsg.set_path(to);
+            fromAny.PackFrom(toMsg);
+
+            std::unique_ptr<BytesReceiver> receiver(new FileReceiver);
+
             std::cout << "downloading file from " << server_address << ":" << from << " to " << to << '\n';
             ::grpc::ClientContext context;
-            client.Receive(from, to, &context);
+            client.Receive(fromAny, toAny, receiver.get(), &context);
         }
         else if (method == "upload") {
+            google::protobuf::Any fromAny;
+            ::Interfaces::File fromMsg;
+            fromMsg.set_path(from);
+            fromAny.PackFrom(fromMsg);
+
+            google::protobuf::Any toAny;
+            ::Interfaces::File toMsg;
+            fromMsg.set_path(to);
+            fromAny.PackFrom(toMsg);
+
+            std::unique_ptr<BytesStreamer> streamer(new FileStreamer);
+
             std::cout << "uploading file from " << from << " to " << server_address << ":" << to << '\n';
             ::grpc::ClientContext context;
-            client.Send(from, to, &context);
+            client.Send(fromAny, toAny, streamer.get(), &context);
         }
         else {
             std::cout << "unknown --method\n";

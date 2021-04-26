@@ -15,7 +15,8 @@
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_io_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Chunk_io_2eproto;
-extern PROTOBUF_INTERNAL_EXPORT_io_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Info_io_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_io_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Info_io_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_google_2fprotobuf_2fany_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Any_google_2fprotobuf_2fany_2eproto;
 namespace Io {
 class InfoDefaultTypeInternal {
  public:
@@ -57,8 +58,9 @@ static void InitDefaultsscc_info_Info_io_2eproto() {
   }
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Info_io_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_Info_io_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_Info_io_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_Info_io_2eproto}, {
+      &scc_info_Any_google_2fprotobuf_2fany_2eproto.base,}};
 
 static void InitDefaultsscc_info_Packet_io_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -136,15 +138,18 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_io_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\010io.proto\022\002Io\"\023\n\004Info\022\013\n\003msg\030\001 \001(\t\"\025\n\005C"
-  "hunk\022\014\n\004data\030\001 \001(\014\"O\n\006Packet\022\030\n\004info\030\001 \001"
-  "(\0132\010.Io.InfoH\000\022\032\n\005chunk\030\002 \001(\0132\t.Io.Chunk"
-  "H\000B\017\n\rpacketOptions\"\'\n\006Status\022\017\n\007success"
-  "\030\001 \001(\010\022\014\n\004desc\030\002 \001(\t2R\n\010Transfer\022\"\n\007Rece"
-  "ive\022\010.Io.Info\032\t.Io.Chunk\"\0000\001\022\"\n\004Send\022\n.I"
-  "o.Packet\032\n.Io.Status\"\000(\001b\006proto3"
+  "\n\010io.proto\022\002Io\032\031google/protobuf/any.prot"
+  "o\")\n\004Info\022!\n\003msg\030\001 \001(\0132\024.google.protobuf"
+  ".Any\"\025\n\005Chunk\022\014\n\004data\030\001 \001(\014\"O\n\006Packet\022\030\n"
+  "\004info\030\001 \001(\0132\010.Io.InfoH\000\022\032\n\005chunk\030\002 \001(\0132\t"
+  ".Io.ChunkH\000B\017\n\rpacketOptions\"\'\n\006Status\022\017"
+  "\n\007success\030\001 \001(\010\022\014\n\004desc\030\002 \001(\t2R\n\010Transfe"
+  "r\022\"\n\007Receive\022\010.Io.Info\032\t.Io.Chunk\"\0000\001\022\"\n"
+  "\004Send\022\n.Io.Packet\032\n.Io.Status\"\000(\001b\006proto"
+  "3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_io_2eproto_deps[1] = {
+  &::descriptor_table_google_2fprotobuf_2fany_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_io_2eproto_sccs[4] = {
   &scc_info_Chunk_io_2eproto.base,
@@ -154,8 +159,8 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_io_
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_io_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_io_2eproto = {
-  false, false, descriptor_table_protodef_io_2eproto, "io.proto", 272,
-  &descriptor_table_io_2eproto_once, descriptor_table_io_2eproto_sccs, descriptor_table_io_2eproto_deps, 4, 0,
+  false, false, descriptor_table_protodef_io_2eproto, "io.proto", 321,
+  &descriptor_table_io_2eproto_once, descriptor_table_io_2eproto_sccs, descriptor_table_io_2eproto_deps, 4, 1,
   schemas, file_default_instances, TableStruct_io_2eproto::offsets,
   file_level_metadata_io_2eproto, 4, file_level_enum_descriptors_io_2eproto, file_level_service_descriptors_io_2eproto,
 };
@@ -168,8 +173,19 @@ namespace Io {
 
 class Info::_Internal {
  public:
+  static const PROTOBUF_NAMESPACE_ID::Any& msg(const Info* msg);
 };
 
+const PROTOBUF_NAMESPACE_ID::Any&
+Info::_Internal::msg(const Info* msg) {
+  return *msg->msg_;
+}
+void Info::clear_msg() {
+  if (GetArena() == nullptr && msg_ != nullptr) {
+    delete msg_;
+  }
+  msg_ = nullptr;
+}
 Info::Info(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
   SharedCtor();
@@ -179,17 +195,17 @@ Info::Info(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 Info::Info(const Info& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_msg().empty()) {
-    msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_msg(), 
-      GetArena());
+  if (from._internal_has_msg()) {
+    msg_ = new PROTOBUF_NAMESPACE_ID::Any(*from.msg_);
+  } else {
+    msg_ = nullptr;
   }
   // @@protoc_insertion_point(copy_constructor:Io.Info)
 }
 
 void Info::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_Info_io_2eproto.base);
-  msg_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  msg_ = nullptr;
 }
 
 Info::~Info() {
@@ -200,7 +216,7 @@ Info::~Info() {
 
 void Info::SharedDtor() {
   GOOGLE_DCHECK(GetArena() == nullptr);
-  msg_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete msg_;
 }
 
 void Info::ArenaDtor(void* object) {
@@ -224,7 +240,10 @@ void Info::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  msg_.ClearToEmpty();
+  if (GetArena() == nullptr && msg_ != nullptr) {
+    delete msg_;
+  }
+  msg_ = nullptr;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -235,12 +254,10 @@ const char* Info::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inter
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // string msg = 1;
+      // .google.protobuf.Any msg = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
-          auto str = _internal_mutable_msg();
-          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Io.Info.msg"));
+          ptr = ctx->ParseMessage(_internal_mutable_msg(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -272,14 +289,12 @@ failure:
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // string msg = 1;
-  if (this->msg().size() > 0) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_msg().data(), static_cast<int>(this->_internal_msg().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Io.Info.msg");
-    target = stream->WriteStringMaybeAliased(
-        1, this->_internal_msg(), target);
+  // .google.protobuf.Any msg = 1;
+  if (this->has_msg()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::msg(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -298,11 +313,11 @@ size_t Info::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string msg = 1;
-  if (this->msg().size() > 0) {
+  // .google.protobuf.Any msg = 1;
+  if (this->has_msg()) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_msg());
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *msg_);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -336,8 +351,8 @@ void Info::MergeFrom(const Info& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from.msg().size() > 0) {
-    _internal_set_msg(from._internal_msg());
+  if (from.has_msg()) {
+    _internal_mutable_msg()->PROTOBUF_NAMESPACE_ID::Any::MergeFrom(from._internal_msg());
   }
 }
 
@@ -362,7 +377,7 @@ bool Info::IsInitialized() const {
 void Info::InternalSwap(Info* other) {
   using std::swap;
   _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
-  msg_.Swap(&other->msg_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  swap(msg_, other->msg_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Info::GetMetadata() const {

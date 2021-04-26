@@ -31,6 +31,7 @@
 #include <google/protobuf/repeated_field.h>  // IWYU pragma: export
 #include <google/protobuf/extension_set.h>  // IWYU pragma: export
 #include <google/protobuf/unknown_field_set.h>
+#include <google/protobuf/any.pb.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 #define PROTOBUF_INTERNAL_EXPORT_io_2eproto
@@ -191,21 +192,23 @@ class Info PROTOBUF_FINAL :
   enum : int {
     kMsgFieldNumber = 1,
   };
-  // string msg = 1;
-  void clear_msg();
-  const std::string& msg() const;
-  void set_msg(const std::string& value);
-  void set_msg(std::string&& value);
-  void set_msg(const char* value);
-  void set_msg(const char* value, size_t size);
-  std::string* mutable_msg();
-  std::string* release_msg();
-  void set_allocated_msg(std::string* msg);
+  // .google.protobuf.Any msg = 1;
+  bool has_msg() const;
   private:
-  const std::string& _internal_msg() const;
-  void _internal_set_msg(const std::string& value);
-  std::string* _internal_mutable_msg();
+  bool _internal_has_msg() const;
   public:
+  void clear_msg();
+  const PROTOBUF_NAMESPACE_ID::Any& msg() const;
+  PROTOBUF_NAMESPACE_ID::Any* release_msg();
+  PROTOBUF_NAMESPACE_ID::Any* mutable_msg();
+  void set_allocated_msg(PROTOBUF_NAMESPACE_ID::Any* msg);
+  private:
+  const PROTOBUF_NAMESPACE_ID::Any& _internal_msg() const;
+  PROTOBUF_NAMESPACE_ID::Any* _internal_mutable_msg();
+  public:
+  void unsafe_arena_set_allocated_msg(
+      PROTOBUF_NAMESPACE_ID::Any* msg);
+  PROTOBUF_NAMESPACE_ID::Any* unsafe_arena_release_msg();
 
   // @@protoc_insertion_point(class_scope:Io.Info)
  private:
@@ -214,7 +217,7 @@ class Info PROTOBUF_FINAL :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr msg_;
+  PROTOBUF_NAMESPACE_ID::Any* msg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_io_2eproto;
 };
@@ -709,64 +712,80 @@ class Status PROTOBUF_FINAL :
 #endif  // __GNUC__
 // Info
 
-// string msg = 1;
-inline void Info::clear_msg() {
-  msg_.ClearToEmpty();
+// .google.protobuf.Any msg = 1;
+inline bool Info::_internal_has_msg() const {
+  return this != internal_default_instance() && msg_ != nullptr;
 }
-inline const std::string& Info::msg() const {
+inline bool Info::has_msg() const {
+  return _internal_has_msg();
+}
+inline const PROTOBUF_NAMESPACE_ID::Any& Info::_internal_msg() const {
+  const PROTOBUF_NAMESPACE_ID::Any* p = msg_;
+  return p != nullptr ? *p : reinterpret_cast<const PROTOBUF_NAMESPACE_ID::Any&>(
+      PROTOBUF_NAMESPACE_ID::_Any_default_instance_);
+}
+inline const PROTOBUF_NAMESPACE_ID::Any& Info::msg() const {
   // @@protoc_insertion_point(field_get:Io.Info.msg)
   return _internal_msg();
 }
-inline void Info::set_msg(const std::string& value) {
-  _internal_set_msg(value);
-  // @@protoc_insertion_point(field_set:Io.Info.msg)
-}
-inline std::string* Info::mutable_msg() {
-  // @@protoc_insertion_point(field_mutable:Io.Info.msg)
-  return _internal_mutable_msg();
-}
-inline const std::string& Info::_internal_msg() const {
-  return msg_.Get();
-}
-inline void Info::_internal_set_msg(const std::string& value) {
-  
-  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, value, GetArena());
-}
-inline void Info::set_msg(std::string&& value) {
-  
-  msg_.Set(
-    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::move(value), GetArena());
-  // @@protoc_insertion_point(field_set_rvalue:Io.Info.msg)
-}
-inline void Info::set_msg(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(value), GetArena());
-  // @@protoc_insertion_point(field_set_char:Io.Info.msg)
-}
-inline void Info::set_msg(const char* value,
-    size_t size) {
-  
-  msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, ::std::string(
-      reinterpret_cast<const char*>(value), size), GetArena());
-  // @@protoc_insertion_point(field_set_pointer:Io.Info.msg)
-}
-inline std::string* Info::_internal_mutable_msg() {
-  
-  return msg_.Mutable(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, GetArena());
-}
-inline std::string* Info::release_msg() {
-  // @@protoc_insertion_point(field_release:Io.Info.msg)
-  return msg_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
-}
-inline void Info::set_allocated_msg(std::string* msg) {
-  if (msg != nullptr) {
+inline void Info::unsafe_arena_set_allocated_msg(
+    PROTOBUF_NAMESPACE_ID::Any* msg) {
+  if (GetArena() == nullptr) {
+    delete reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(msg_);
+  }
+  msg_ = msg;
+  if (msg) {
     
   } else {
     
   }
-  msg_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), msg,
-      GetArena());
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Io.Info.msg)
+}
+inline PROTOBUF_NAMESPACE_ID::Any* Info::release_msg() {
+  
+  PROTOBUF_NAMESPACE_ID::Any* temp = msg_;
+  msg_ = nullptr;
+  if (GetArena() != nullptr) {
+    temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+  }
+  return temp;
+}
+inline PROTOBUF_NAMESPACE_ID::Any* Info::unsafe_arena_release_msg() {
+  // @@protoc_insertion_point(field_release:Io.Info.msg)
+  
+  PROTOBUF_NAMESPACE_ID::Any* temp = msg_;
+  msg_ = nullptr;
+  return temp;
+}
+inline PROTOBUF_NAMESPACE_ID::Any* Info::_internal_mutable_msg() {
+  
+  if (msg_ == nullptr) {
+    auto* p = CreateMaybeMessage<PROTOBUF_NAMESPACE_ID::Any>(GetArena());
+    msg_ = p;
+  }
+  return msg_;
+}
+inline PROTOBUF_NAMESPACE_ID::Any* Info::mutable_msg() {
+  // @@protoc_insertion_point(field_mutable:Io.Info.msg)
+  return _internal_mutable_msg();
+}
+inline void Info::set_allocated_msg(PROTOBUF_NAMESPACE_ID::Any* msg) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  if (message_arena == nullptr) {
+    delete reinterpret_cast< ::PROTOBUF_NAMESPACE_ID::MessageLite*>(msg_);
+  }
+  if (msg) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      reinterpret_cast<::PROTOBUF_NAMESPACE_ID::MessageLite*>(msg)->GetArena();
+    if (message_arena != submessage_arena) {
+      msg = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, msg, submessage_arena);
+    }
+    
+  } else {
+    
+  }
+  msg_ = msg;
   // @@protoc_insertion_point(field_set_allocated:Io.Info.msg)
 }
 

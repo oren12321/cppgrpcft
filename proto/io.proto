@@ -2,13 +2,15 @@ syntax = "proto3";
 
 package Io;
 
+import "google/protobuf/any.proto";
+
 service Transfer {
     rpc Receive (Info) returns (stream Chunk) {}
     rpc Send (stream Packet) returns (Status) {}
 }
 
 message Info {
-    string msg = 1;
+    google.protobuf.Any msg = 1;
 }
 
 message Chunk {
