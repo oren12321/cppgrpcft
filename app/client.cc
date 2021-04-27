@@ -57,8 +57,8 @@ int main(int argc, char** argv) {
 
             google::protobuf::Any toAny;
             ::Interfaces::File toMsg;
-            fromMsg.set_path(to);
-            fromAny.PackFrom(toMsg);
+            toMsg.set_path(to);
+            toAny.PackFrom(toMsg);
 
             std::unique_ptr<BytesReceiver> receiver(new FileReceiver);
 
@@ -74,8 +74,8 @@ int main(int argc, char** argv) {
 
             google::protobuf::Any toAny;
             ::Interfaces::File toMsg;
-            fromMsg.set_path(to);
-            fromAny.PackFrom(toMsg);
+            toMsg.set_path(to);
+            toAny.PackFrom(toMsg);
 
             std::unique_ptr<BytesStreamer> streamer(new FileStreamer);
 

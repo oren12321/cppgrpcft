@@ -99,8 +99,8 @@ TEST_F(CppGrpcFT_Bytes, BytesDownload) {
 
     google::protobuf::Any toAny;
     ::Interfaces::File toMsg;
-    fromMsg.set_path(_to);
-    fromAny.PackFrom(toMsg);
+    toMsg.set_path(_to);
+    toAny.PackFrom(toMsg);
 
     try {
         ::grpc::ClientContext context;
@@ -164,8 +164,8 @@ TEST_F(CppGrpcFT_Bytes, BytesUpload) {
 
     google::protobuf::Any toAny;
     ::Interfaces::File toMsg;
-    fromMsg.set_path(_to);
-    fromAny.PackFrom(toMsg);
+    toMsg.set_path(_to);
+    toAny.PackFrom(toMsg);
 
     try {
         ::grpc::ClientContext context;
