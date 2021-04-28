@@ -118,6 +118,9 @@
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
+    response->set_success(true);
+    response->set_desc("upload succeeded");
+
     return ::grpc::Status::OK;
 }
 
