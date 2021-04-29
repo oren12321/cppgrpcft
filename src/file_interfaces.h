@@ -46,7 +46,7 @@ public:
         return std::string(_buf.data(), n);
     }
 
-    void finalize() {
+    void finalize() override {
         _ifs.close();
     }
 
