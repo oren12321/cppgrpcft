@@ -17,7 +17,7 @@ public:
     void init(const google::protobuf::Any& any) override {
         ::Interfaces::File file;
         if (!any.UnpackTo(&file)) {
-            throw std::runtime_error("failed to pack 'Any' to 'File'");
+            throw std::runtime_error("failed to unpack 'Any' to 'File'");
         }
 
         std::string path = file.path();
@@ -27,7 +27,7 @@ public:
         _ifs.open(path, std::ios::in | std::ios::binary);
         if (!_ifs.is_open()) {
             std::stringstream ss;
-            ss << "failed to open downloaded file: '" << path << "'";
+            ss << "failed to open '" << path << "'";
             throw std::runtime_error(ss.str());
         }
     }
@@ -61,7 +61,7 @@ public:
     void init(const google::protobuf::Any& any) override {
         ::Interfaces::File file;
         if (!any.UnpackTo(&file)) {
-            throw std::runtime_error("failed to pack 'Any' to 'File'");
+            throw std::runtime_error("failed to unpack 'Any' to 'File'");
         }
 
         std::string path = file.path();
@@ -69,7 +69,7 @@ public:
         _ofs.open(path, std::ios::out | std::ios::binary);
         if (!_ofs.is_open()) {
             std::stringstream ss;
-            ss << "failed to create destination file: '" << path << "'";
+            ss << "failed to create '" << path << "'";
             throw std::runtime_error(ss.str());
         }
     }

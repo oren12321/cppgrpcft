@@ -19,7 +19,7 @@
 void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, const google::protobuf::Any& receiverMsg, BytesReceiver* receiver, ::grpc::ClientContext* context) {
 
     if (receiver == nullptr) {
-        throw std::runtime_error( "uninitialized bytes receiver");
+        throw std::runtime_error("receiver is null");
     }
 
     try {
@@ -27,7 +27,7 @@ void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, cons
     }
     catch(const std::exception& ex) {
         std::stringstream ss;
-        ss << "bytes receiver initialization failed: " << ex.what();
+        ss << "failed to init receiver: " << ex.what();
         throw std::runtime_error(ss.str());
     }
 
@@ -47,7 +47,7 @@ void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, cons
         }
         catch(const std::exception& ex) {
             std::stringstream ss;
-            ss << "failed to push bytes: " << ex.what();
+            ss << "failed to push data to receiver: " << ex.what();
             throw std::runtime_error(ss.str());
         }
     }
@@ -63,7 +63,7 @@ void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, cons
 void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const google::protobuf::Any& receiverMsg, BytesStreamer* streamer, ::grpc::ClientContext* context) {
 
     if (streamer == nullptr) {
-        throw std::runtime_error("uninitialized bytes streamer");
+        throw std::runtime_error("streamer is null");
     }
 
     try {
@@ -71,7 +71,7 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
     }
     catch(const std::exception& ex) {
         std::stringstream ss;
-        ss << "bytes streamer initialization failed: " << ex.what();
+        ss << "failed to init streamer: " << ex.what();
         throw std::runtime_error(ss.str());
     }
 
@@ -106,7 +106,7 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
         }
         catch(const std::exception& ex) {
             std::stringstream ss;
-            ss << "failed to get next streamer bytes: " << ex.what();
+            ss << "failed to read from streamer: " << ex.what();
         }
     }
 
@@ -115,7 +115,7 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
     ::grpc::Status status = writer->Finish();
     if (!status.ok()) {
         std::stringstream ss;
-        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.desc() << ')';
+        ss << "failed to finish writer with success=" << ioStatus.success() << " and desc='" << ioStatus.desc() << "': status - code: " << status.error_code() << " message: " << status.error_message();
         throw std::runtime_error(ss.str());
     }
 }

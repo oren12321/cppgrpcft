@@ -20,7 +20,7 @@
     }
 
     if (_streamer == nullptr) {
-        return ::grpc::Status(::grpc::FAILED_PRECONDITION, "uninitialized bytes streamer");
+        return ::grpc::Status(::grpc::FAILED_PRECONDITION, "streamer is null");
     }
 
     try {
@@ -28,7 +28,7 @@
     }
     catch(const std::exception& ex) {
         std::stringstream ss;
-        ss << "bytes streamer initialization failed: " << ex.what();
+        ss << "failed to init streamer: " << ex.what();
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
@@ -44,7 +44,7 @@
         }
         catch(const std::exception& ex) {
             std::stringstream ss;
-            ss << "failed to get next streamer bytes: " << ex.what();
+            ss << "failed to read chunk from streamer: " << ex.what();
             return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
         }
     }
@@ -59,15 +59,15 @@
     }
 
     if (_receiver == nullptr) {
-        return ::grpc::Status(::grpc::FAILED_PRECONDITION, "uninitialized bytes receiver");
+        return ::grpc::Status(::grpc::FAILED_PRECONDITION, "receiver is null");
     }
 
     ::Io::Packet header;
     reader->Read(&header);
     if (!header.has_info()) {
         response->set_success(false);
-        response->set_desc("first packet is not file info");
-        return ::grpc::Status(::grpc::FAILED_PRECONDITION, "first packet is not file info");
+        response->set_desc("first packet is not 'Info'");
+        return ::grpc::Status(::grpc::INVALID_ARGUMENT, "invalid first packet");
     }
 
     try {
@@ -75,7 +75,7 @@
     }
     catch(const std::exception& ex) {
         std::stringstream ss;
-        ss << "bytes receiver initialization failed: " << ex.what();
+        ss << "failed to init receiver: " << ex.what();
         response->set_success(false);
         response->set_desc(ss.str());
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
@@ -88,10 +88,9 @@
     ::Io::Packet payload;
     while (reader->Read(&payload)) {
         if (!payload.has_chunk()) {
-
             response->set_success(false);
-            response->set_desc("packet is not chunk");
-            return ::grpc::Status(::grpc::FAILED_PRECONDITION, "packet is not chunk");
+            response->set_desc("packet is not 'Chunk'");
+            return ::grpc::Status(::grpc::INVALID_ARGUMENT, "invalid packet");
         }
 
         std::string data = payload.chunk().data();
@@ -100,7 +99,7 @@
         }
         catch(const std::exception& ex) {
             std::stringstream ss;
-            ss << "failed to push bytes: " << ex.what();
+            ss << "failed to push chunk to receiver: " << ex.what();
             response->set_success(false);
             response->set_desc(ss.str());
             return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
@@ -108,7 +107,7 @@
     }
 
     response->set_success(true);
-    response->set_desc("upload succeeded");
+    response->set_desc("send_finished successfuly");
 
     return ::grpc::Status::OK;
 }
