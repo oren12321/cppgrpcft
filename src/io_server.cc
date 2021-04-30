@@ -11,6 +11,7 @@
 #include "../proto/io.grpc.pb.h"
 
 #include "io_interfaces.h"
+#include "io_defer.h"
 
 ::grpc::Status BytesTransfer::Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) {
     
@@ -31,6 +32,10 @@
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
+    Defer defer([this]() noexcept {
+        _streamer->finalize();
+    });
+
     while (_streamer->hasNext()) {
         try {
             ::Io::Chunk chunk;
@@ -42,15 +47,6 @@
             ss << "failed to get next streamer bytes: " << ex.what();
             return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
         }
-    }
-
-    try {
-        _streamer->finalize();
-    }
-    catch(const std::exception& ex) {
-        std::stringstream ss;
-        ss << "bytes streamer finalize failed: " << ex.what();
-        return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
     return ::grpc::Status::OK;
@@ -85,6 +81,10 @@
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
+    Defer defer([this]() noexcept {
+        _receiver->finalize();
+    });
+
     ::Io::Packet payload;
     while (reader->Read(&payload)) {
         if (!payload.has_chunk()) {
@@ -105,17 +105,6 @@
             response->set_desc(ss.str());
             return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
         }
-    }
-
-    try {
-        _receiver->finalize();
-    }
-    catch(const std::exception& ex) {
-        std::stringstream ss;
-        ss << "bytes receiver finalize failed: " << ex.what();
-        response->set_success(false);
-        response->set_desc(ss.str());
-        return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
     response->set_success(true);

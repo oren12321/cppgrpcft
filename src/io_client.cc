@@ -14,6 +14,7 @@
 #include "../proto/io.grpc.pb.h"
 
 #include "io_interfaces.h"
+#include "io_defer.h"
 
 void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, const google::protobuf::Any& receiverMsg, BytesReceiver* receiver, ::grpc::ClientContext* context) {
 
@@ -30,6 +31,10 @@ void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, cons
         throw std::runtime_error(ss.str());
     }
 
+    Defer defer([&receiver]() noexcept {
+        receiver->finalize();
+    });
+
     ::Io::Info info;
     info.mutable_msg()->CopyFrom(streamerMsg);
     std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Receive(context, info));
@@ -45,15 +50,6 @@ void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, cons
             ss << "failed to push bytes: " << ex.what();
             throw std::runtime_error(ss.str());
         }
-    }
-
-    try {
-        receiver->finalize();
-    }
-    catch(const std::exception& ex) {
-        std::stringstream ss;
-        ss << "bytes receiver finalize failed: " << ex.what();
-        throw std::runtime_error(ss.str());
     }
 
     ::grpc::Status status = reader->Finish();
@@ -78,6 +74,10 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
         ss << "bytes streamer initialization failed: " << ex.what();
         throw std::runtime_error(ss.str());
     }
+
+    Defer defer([&streamer]() noexcept {
+        streamer->finalize();
+    });
 
     ::Io::Status ioStatus;
     std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Send(context, &ioStatus));
@@ -108,15 +108,6 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
             std::stringstream ss;
             ss << "failed to get next streamer bytes: " << ex.what();
         }
-    }
-
-    try {
-        streamer->finalize();
-    }
-    catch(const std::exception& ex) {
-        std::stringstream ss;
-        ss << "bytes streamer finalize failed: " << ex.what();
-        throw std::runtime_error(ss.str());
     }
 
     writer->WritesDone();

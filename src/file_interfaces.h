@@ -46,7 +46,7 @@ public:
         return std::string(_buf.data(), n);
     }
 
-    void finalize() override {
+    void finalize() noexcept override {
         _ifs.close();
     }
 
@@ -78,7 +78,7 @@ public:
         _ofs.write(data.data(), data.size());
     }
 
-    void finalize() override {
+    void finalize() noexcept override {
         _ofs.close();
     }
 
