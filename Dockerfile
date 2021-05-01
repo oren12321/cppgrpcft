@@ -53,4 +53,6 @@ FROM ubuntu:18.04 AS prod
 WORKDIR /app/
 COPY --from=builder /usr/local/bin/cppgrpcft-client /usr/local/bin/
 COPY --from=builder /usr/local/bin/cppgrpcft-server /usr/local/bin/
+COPY --from=builder /usr/local/include/cppgrpcft /usr/local/include/
+COPY --from=builder /usr/local/lib/libcppgrpcft.a /usr/local/lib/
 
