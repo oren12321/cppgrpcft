@@ -9,8 +9,29 @@ message(STATUS "Using protobuf ${protobuf_VERSION}")
 find_package(gRPC REQUIRED)
 message(STATUS "Using gRPC ${gRPC_VERSION}")
 
-set(hw_proto_srcs ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.pb.cc)
-set(hw_grpc_srcs ${CMAKE_CURRENT_SOURCE_DIR}/proto/io.grpc.pb.cc)
+set(hw_proto_srcs_dir ${CMAKE_CURRENT_SOURCE_DIR}/proto)
+set(protos ${hw_proto_srcs_dir}/io.proto)
+
+add_custom_command(
+    OUTPUT ${hw_proto_srcs_dir}/io.pb.cc
+           ${hw_proto_srcs_dir}/io.pb.h
+    COMMAND protoc
+    ARGS -I ${hw_proto_srcs_dir} --cpp_out=${hw_proto_srcs_dir} ${protos}
+    WORKING_DIRECTORY ${hw_proto_srcs_dir}
+    COMMENT "Generating C++ protobuf sources")
+
+add_custom_command(
+    OUTPUT ${hw_proto_srcs_dir}/io.grpc.pb.cc
+           ${hw_proto_srcs_dir}/io.grpc.pb.h
+    COMMAND protoc
+    ARGS -I ${hw_proto_srcs_dir} --grpc_out=${hw_proto_srcs_dir} --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` ${protos}
+    WORKING_DIRECTORY ${hw_proto_srcs_dir}
+    COMMENT "Generating C++ gRPC sources")
+
+set(hw_proto_srcs
+    ${hw_proto_srcs_dir}/io.pb.cc)
+set(hw_grpc_srcs
+    ${hw_proto_srcs_dir}/io.grpc.pb.cc)
 
 add_library(cppgrpcft)
 target_sources(cppgrpcft
