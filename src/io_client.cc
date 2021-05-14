@@ -37,13 +37,13 @@ void BytesTransferClient::Receive(const google::protobuf::Any& streamerMsg, cons
 
     ::Io::Info info;
     info.mutable_msg()->CopyFrom(streamerMsg);
-    std::unique_ptr<::grpc::ClientReader<::Io::Chunk>> reader(stub_->Receive(context, info));
+    std::unique_ptr<::grpc::ClientReader<::Io::Packet>> reader(stub_->Receive(context, info));
 
-    ::Io::Chunk chunk;
-    while (reader->Read(&chunk)) {
-        std::string data = chunk.data();
+    ::Io::Packet packet;
+    while (reader->Read(&packet)) {
+        std::string data = packet.chunk().data();
         try {
-            receiver->push(data);
+            receiver->push(data, packet.info().msg());
         }
         catch(const std::exception& ex) {
             std::stringstream ss;
@@ -98,8 +98,11 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
 
     while (streamer->hasNext()) {
         try {
+            std::pair<std::string, google::protobuf::Any> next = streamer->getNext();
             ::Io::Packet payload;
-            payload.mutable_chunk()->set_data(streamer->getNext());
+            payload.mutable_info()->mutable_msg()->CopyFrom(next.second);
+            payload.mutable_chunk()->set_data(next.first);
+
             if(!writer->Write(payload)) {
                 break;
             }

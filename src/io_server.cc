@@ -13,7 +13,7 @@
 #include "io_interfaces.h"
 #include "io_defer.h"
 
-::grpc::Status BytesTransfer::Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) {
+::grpc::Status BytesTransfer::Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Packet>* writer) {
     
     if (context->IsCancelled()) {
         return ::grpc::Status(::grpc::CANCELLED, "deadline exceeded or client cancelled, abandoning");
@@ -38,9 +38,13 @@
 
     while (_streamer->hasNext()) {
         try {
-            ::Io::Chunk chunk;
-            chunk.set_data(_streamer->getNext());
-            writer->Write(chunk);
+            std::pair<std::string, google::protobuf::Any> next = _streamer->getNext();
+
+            ::Io::Packet packet;
+            packet.mutable_info()->mutable_msg()->CopyFrom(next.second);
+            packet.mutable_chunk()->set_data(next.first);
+
+            writer->Write(packet);
         }
         catch(const std::exception& ex) {
             std::stringstream ss;
@@ -64,11 +68,6 @@
 
     ::Io::Packet header;
     reader->Read(&header);
-    if (!header.has_info()) {
-        response->set_success(false);
-        response->set_desc("first packet is not 'Info'");
-        return ::grpc::Status(::grpc::INVALID_ARGUMENT, "invalid first packet");
-    }
 
     try {
         _receiver->init(header.info().msg());
@@ -87,15 +86,9 @@
 
     ::Io::Packet payload;
     while (reader->Read(&payload)) {
-        if (!payload.has_chunk()) {
-            response->set_success(false);
-            response->set_desc("packet is not 'Chunk'");
-            return ::grpc::Status(::grpc::INVALID_ARGUMENT, "invalid packet");
-        }
-
         std::string data = payload.chunk().data();
         try {
-            _receiver->push(data);
+            _receiver->push(data, payload.info().msg());
         }
         catch(const std::exception& ex) {
             std::stringstream ss;

@@ -8,6 +8,7 @@
 #include <sstream>
 
 #include <google/protobuf/any.pb.h>
+#include <google/protobuf/empty.pb.h>
 
 #include "io_interfaces.h"
 #include "../proto/file.grpc.pb.h"
@@ -36,14 +37,19 @@ public:
         return !_empty;
     }
 
-    std::string getNext() override {
+    std::pair<std::string, google::protobuf::Any> getNext() override {
+        google::protobuf::Empty empty;
+        google::protobuf::Any any;
+        any.PackFrom(empty);
+
         if (_ifs.eof()) {
             _empty = true;
-            return std::string{};
+            return std::make_pair(std::string{}, any);
         }
         _ifs.read(_buf.data(), _buf.size());
         std::streamsize n = _ifs.gcount();
-        return std::string(_buf.data(), n);
+
+        return std::make_pair(std::string(_buf.data(), n), any);
     }
 
     void finalize() noexcept override {
@@ -74,7 +80,7 @@ public:
         }
     }
 
-    void push(std::string data) override {
+    void push(std::string data, const google::protobuf::Any&) override {
         _ofs.write(data.data(), data.size());
     }
 

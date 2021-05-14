@@ -9,7 +9,7 @@
 
 class BytesTransfer final : public ::Io::Transfer::Service {
 
-    ::grpc::Status Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Chunk>* writer) override;
+    ::grpc::Status Receive(::grpc::ServerContext* context, const ::Io::Info* request, ::grpc::ServerWriter< ::Io::Packet>* writer) override;
 
     ::grpc::Status Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) override;
 
