@@ -90,6 +90,7 @@ find_package(GTest REQUIRED)
 add_executable(cppgrpcft-tests
     tests/main.cc
     tests/cppgrpcft_bytes_test.cc
+    tests/cppgrpcft_metadata_test.cc
     tests/utils.cc)
 target_link_libraries(cppgrpcft-tests
     gRPC::grpc++
