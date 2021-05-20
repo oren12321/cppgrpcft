@@ -10,6 +10,7 @@
 #include <grpcpp/grpcpp.h>
 
 #include <google/protobuf/any.pb.h>
+#include <google/protobuf/empty.pb.h>
 
 #include "../proto/io.grpc.pb.h"
 
@@ -79,8 +80,8 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
         streamer->finalize();
     });
 
-    ::Io::Status ioStatus;
-    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Send(context, &ioStatus));
+    google::protobuf::Empty empty;
+    std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Send(context, &empty));
 
     ::Io::Packet header;
     header.mutable_info()->mutable_msg()->CopyFrom(receiverMsg);
@@ -91,7 +92,7 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
         ::grpc::Status status = writer->Finish();
         if (!status.ok()) {
             std::stringstream ss;
-            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.desc() << ')';
+            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message();
             throw std::runtime_error(ss.str());
         }
     }
@@ -118,7 +119,7 @@ void BytesTransferClient::Send(const google::protobuf::Any& streamerMsg, const g
     ::grpc::Status status = writer->Finish();
     if (!status.ok()) {
         std::stringstream ss;
-        ss << "failed to finish writer with success=" << ioStatus.success() << " and desc='" << ioStatus.desc() << "': status - code: " << status.error_code() << " message: " << status.error_message();
+        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message();
         throw std::runtime_error(ss.str());
     }
 }

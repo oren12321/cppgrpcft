@@ -13,7 +13,7 @@ std::vector<char> generateRandomBuffer(int size) {
     std::seed_seq seed{};
     std::mt19937 eng(seed);
 
-    std::uniform_int_distribution<char> dist;
+    std::uniform_int_distribution<int> dist;
     std::vector<char> v(size);
 
     std::generate(v.begin(), v.end(), std::bind(dist, eng));

@@ -8,6 +8,8 @@
 
 #include <grpcpp/grpcpp.h>
 
+#include <google/protobuf/empty.pb.h>
+
 #include "../proto/io.grpc.pb.h"
 
 #include "io_interfaces.h"
@@ -56,7 +58,7 @@
     return ::grpc::Status::OK;
 }
 
-::grpc::Status BytesTransfer::Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, ::Io::Status* response) {
+::grpc::Status BytesTransfer::Send(::grpc::ServerContext* context, ::grpc::ServerReader< ::Io::Packet>* reader, google::protobuf::Empty*) {
 
     if (context->IsCancelled()) {
         return ::grpc::Status(::grpc::CANCELLED, "deadline exceeded or client cancelled, abandoning");
@@ -75,8 +77,6 @@
     catch(const std::exception& ex) {
         std::stringstream ss;
         ss << "failed to init receiver: " << ex.what();
-        response->set_success(false);
-        response->set_desc(ss.str());
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
@@ -93,14 +93,9 @@
         catch(const std::exception& ex) {
             std::stringstream ss;
             ss << "failed to push chunk to receiver: " << ex.what();
-            response->set_success(false);
-            response->set_desc(ss.str());
             return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
         }
     }
-
-    response->set_success(true);
-    response->set_desc("send_finished successfuly");
 
     return ::grpc::Status::OK;
 }

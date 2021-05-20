@@ -22,6 +22,7 @@ add_custom_command(
     COMMAND protoc
     ARGS -I ${hw_proto_srcs_dir} --cpp_out=${hw_proto_srcs_dir} ${protos}
     WORKING_DIRECTORY ${hw_proto_srcs_dir}
+    DEPENDS ${hw_proto_srcs_dir}/io.proto ${hw_proto_srcs_dir}/file.proto
     COMMENT "Generating C++ protobuf sources")
 
 add_custom_command(
@@ -32,6 +33,7 @@ add_custom_command(
     COMMAND protoc
     ARGS -I ${hw_proto_srcs_dir} --grpc_out=${hw_proto_srcs_dir} --plugin=protoc-gen-grpc=`which grpc_cpp_plugin` ${protos}
     WORKING_DIRECTORY ${hw_proto_srcs_dir}
+    DEPENDS ${hw_proto_srcs_dir}/io.proto ${hw_proto_srcs_dir}/file.proto
     COMMENT "Generating C++ gRPC sources")
 
 set(hw_proto_srcs
