@@ -56,8 +56,8 @@
     ::Io::Packet header;
     reader->Read(&header);
     if (!header.has_fileinfo()) {
-        response->set_success(false);
-        response->set_msg("first packet is not file info");
+        //response->set_success(false);
+        //response->set_msg("first packet is not file info");
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, "first packet is not file info");
     }
 
@@ -66,8 +66,8 @@
     if (!ofs.is_open()) {
         std::stringstream ss;
         ss << "failed to create destination file: '" << to << "'";
-        response->set_success(false);
-        response->set_msg(ss.str());
+        //response->set_success(false);
+        //response->set_msg(ss.str());
         return ::grpc::Status(::grpc::FAILED_PRECONDITION, ss.str());
     }
 
@@ -77,8 +77,8 @@
             ofs.close();
             std::remove(to.c_str());
 
-            response->set_success(false);
-            response->set_msg("packet is not chunk");
+            //response->set_success(false);
+            //response->set_msg("packet is not chunk");
             return ::grpc::Status(::grpc::FAILED_PRECONDITION, "packet is not chunk");
         }
 

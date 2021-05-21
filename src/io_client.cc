@@ -58,6 +58,7 @@ void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::Clien
         throw std::runtime_error("file for upload is empty");
     }
 
+    // ::Io::Status is unused, and should be removed in next release.
     ::Io::Status ioStatus;
     std::unique_ptr<::grpc::ClientWriter<::Io::Packet>> writer(stub_->Upload(context, &ioStatus));
 
@@ -70,7 +71,7 @@ void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::Clien
         ::grpc::Status status = writer->Finish();
         if (!status.ok()) {
             std::stringstream ss;
-            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
+            ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message(); // << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
             throw std::runtime_error(ss.str());
         }
     }
@@ -95,7 +96,7 @@ void FilesTransferClient::Upload(std::string from, std::string to, ::grpc::Clien
     ::grpc::Status status = writer->Finish();
     if (!status.ok()) {
         std::stringstream ss;
-        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message() << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
+        ss << "client failed - code: " << status.error_code() << ", message: " << status.error_message(); // << ", io status: (success: " << ioStatus.success() << ", msg: " << ioStatus.msg() << ')';
         throw std::runtime_error(ss.str());
     }
 }
