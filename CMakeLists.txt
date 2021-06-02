@@ -65,7 +65,14 @@ install(
         src/io_client.h
         src/io_interfaces.h
         src/file_interfaces.h
-    DESTINATION include/cppgrpcft)
+    DESTINATION include/cppgrpcft/cppgrpcft)
+install(
+    FILES 
+        proto/io.pb.h
+        proto/io.grpc.pb.h
+        proto/file.pb.h
+        proto/file.grpc.pb.h
+    DESTINATION include/cppgrpcft/proto)
 
 add_executable(cppgrpcft-client
     app/client.cc)
